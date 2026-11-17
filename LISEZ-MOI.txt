@@ -1,0 +1,43 @@
+DOSSIER DE REVUE — 9785-9789, rue André-Jobin (Nº Centris 16713528)
+
+Quatre maquettes de page d'atterrissage et leur tableau de bord.
+Ouvrir index.html.
+
+--------------------------------------------------------------------
+METTRE EN LIGNE SUR VERCEL  (le plus simple)
+--------------------------------------------------------------------
+Dans ce dossier, en ligne de commande :
+
+    npx vercel --prod
+
+Suivre les questions : se connecter, confirmer le dossier courant,
+accepter les réglages par défaut. Vercel rend une adresse du type
+https://revue-andre-jobin.vercel.app à partager telle quelle.
+
+Le fichier vercel.json ajoute l'en-tête X-Robots-Tag noindex sur toutes
+les pages. Avec robots.txt et les balises meta, ça fait trois barrières
+contre l'indexation.
+
+ATTENTION : sur un compte Vercel gratuit, le lien est PUBLIC pour qui le
+connaît. Il n'est pas indexé, mais il n'est pas protégé par mot de passe
+(c'est une option payante). Ne le diffuse pas au-delà des personnes
+concernées.
+
+--------------------------------------------------------------------
+METTRE EN LIGNE SUR BIZTOVISA.CA
+--------------------------------------------------------------------
+Téléverser le contenu de ce dossier dans un sous-dossier nommé exactement
+"revue" :   biztovisa.ca/revue/
+
+Le nom "revue" compte : les pages s'en servent pour garder le bouton
+« Retour aux variantes », qui disparaît partout ailleurs sur le domaine.
+
+--------------------------------------------------------------------
+CE QUE CE DOSSIER N'EST PAS
+--------------------------------------------------------------------
+Ce ne sont pas les pages finales. Le formulaire n'envoie rien, les montants
+de financement sont des illustrations, et un bandeau rouge le rappelle en
+haut de chaque page.
+
+À NE PAS DIFFUSER À UN ACHETEUR. Le tableau de bord contient des hypothèses
+de financement et des estimations de dépenses réservées à la courtière.

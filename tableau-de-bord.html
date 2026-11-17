@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<!-- Dossier de revue : jamais indexé. Cette page porte le nom et la marque
+     d'une courtière et son formulaire n'est pas branché — elle ne doit
+     apparaître dans aucun moteur de recherche. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Variantes — André-Jobin</title>
+<meta name="description" content="Comparaison des pages d'atterrissage pour le quadruplex du 9785-9789, rue André-Jobin.">
+<!--
+  OUTIL INTERNE — ne se publie pas.
+  Sert à comparer les variantes de page d'atterrissage avant de choisir.
+  Les aperçus sont les vraies pages, chargées en iframe depuis le même dossier.
+  Ouvre ce fichier par un serveur local, pas par file:// — certains navigateurs
+  bloquent les iframes de fichiers locaux.
+-->
+<style>
+  :root{
+    --paper:#ffffff; --wash:#f6f3ee; --ink:#15191c; --ink-soft:#4a5157;
+    --ink-faint:#7b8288; --line:#e2ddd5; --accent:#0b4f6c; --accent-wash:#eef4f7;
+    --warn:#8a3b12; --warn-wash:#fbf1e9; --ok:#1d5b3f;
+    --r:14px; --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.05);
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#15191c; --wash:#0f1316; --ink:#eef1f3; --ink-soft:#aeb6bc;
+      --ink-faint:#848c93; --line:#2a3137; --accent:#6fb4d4; --accent-wash:#16242c;
+      --warn:#e09a6a; --warn-wash:#2a1d14; --ok:#6fc49b;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15191c; --wash:#0f1316; --ink:#eef1f3; --ink-soft:#aeb6bc;
+    --ink-faint:#848c93; --line:#2a3137; --accent:#6fb4d4; --accent-wash:#16242c;
+    --warn:#e09a6a; --warn-wash:#2a1d14; --ok:#6fc49b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--wash);color:var(--ink);
+    font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+  header.top{padding:40px 0 28px;border-bottom:1px solid var(--line);background:var(--paper)}
+  .eyebrow{
+    font:700 11px/1 var(--sans);letter-spacing:.11em;text-transform:uppercase;
+    color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1{font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.15;margin:0 0 10px;letter-spacing:-.02em;text-wrap:balance}
+  .lede{color:var(--ink-soft);max-width:66ch;margin:0}
+  main{padding:32px 0 64px}
+  h2{font-size:clamp(1.25rem,2.6vw,1.6rem);margin:0 0 6px;letter-spacing:-.015em}
+  .sec{margin-top:44px}
+  .sec > p.intro{color:var(--ink-soft);max-width:70ch;margin:0 0 20px}
+
+  /* ---- cartes de variantes ---- */
+  .grid{display:grid;gap:18px;grid-template-columns:1fr}
+  @media (min-width:860px){ .grid{grid-template-columns:1fr 1fr} }
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+  }
+  .card.live{border-color:var(--accent);border-width:2px}
+  /* L'aperçu est la vraie page, réduite. pointer-events:none empêche de
+     cliquer dedans par erreur : le bouton sous l'aperçu est le seul chemin. */
+  .shot{
+    position:relative;height:260px;overflow:hidden;background:var(--wash);
+    border-bottom:1px solid var(--line);
+  }
+  .shot iframe{
+    position:absolute;top:0;left:0;width:1200px;height:1040px;border:0;
+    transform:scale(.38);transform-origin:0 0;pointer-events:none;
+  }
+  .shot .mask{position:absolute;inset:0}
+  .card-body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
+  .badge{
+    display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.1em;
+    text-transform:uppercase;padding:5px 9px;border-radius:999px;
+    background:var(--accent-wash);color:var(--accent);margin-bottom:10px;
+  }
+  .badge.draft{background:var(--warn-wash);color:var(--warn)}
+  .card h3{margin:0 0 4px;font-size:1.2rem}
+  .aud{color:var(--ink-faint);font-size:.85rem;margin:0 0 14px}
+  .quote{
+    margin:0 0 14px;padding:12px 14px;background:var(--wash);
+    border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+    font-size:.95rem;line-height:1.45;
+  }
+  .kv{list-style:none;margin:0 0 16px;padding:0;font-size:.9rem}
+  .kv li{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .kv li:last-child{border-bottom:0}
+  .kv b{flex:0 0 46%;font-weight:600;color:var(--ink-soft)}
+  .kv span{flex:1;text-align:right;font-variant-numeric:tabular-nums}
+  .neg{color:var(--warn);font-weight:700}
+  .pos{color:var(--ok);font-weight:700}
+  .btn-row{margin-top:auto;display:flex;gap:9px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:11px 18px;border-radius:9px;text-decoration:none;
+    font:600 14px/1 var(--sans);border:1px solid var(--line);color:var(--ink);
+    background:var(--paper);
+  }
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ---- tableau comparatif ---- */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{
+    width:100%;min-width:560px;border-collapse:collapse;background:var(--paper);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:.92rem;
+  }
+  th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
+  thead th{
+    background:var(--wash);font:700 10px/1.3 var(--sans);letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-faint);
+  }
+  tbody th{font-weight:600;color:var(--ink-soft)}
+  td{font-variant-numeric:tabular-nums}
+  tr:last-child th,tr:last-child td{border-bottom:0}
+
+  /* ---- encadrés ---- */
+  .note{
+    background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:0 var(--r) var(--r) 0;padding:18px 20px;margin-top:18px;
+  }
+  .note.warn{border-left-color:var(--warn);background:var(--warn-wash)}
+  .note h4{margin:0 0 6px;font-size:1rem}
+  .note p{margin:0;color:var(--ink-soft);font-size:.93rem}
+  .note p + p{margin-top:9px}
+  footer{
+    border-top:1px solid var(--line);padding:24px 0 48px;color:var(--ink-faint);
+    font-size:.82rem;background:var(--paper);
+  }
+  footer p{margin:0 0 6px;max-width:80ch}
+
+  .grp{
+    margin:34px 0 4px;font-size:1.02rem;letter-spacing:-.01em;
+    padding-bottom:9px;border-bottom:2px solid var(--accent);display:inline-block;
+  }
+  .grp-sub{margin:0 0 16px;color:var(--ink-soft);font-size:.93rem;max-width:68ch}
+  @media (min-width:860px){ .grid-solo{grid-template-columns:1fr 1fr} .grid-solo .card:only-child{max-width:none} }
+
+  /* La phrase qui résume chaque variante en un coup d'œil. C'est ce qu'on lit
+     en premier dans la carte, avant le profil d'acheteur et les chiffres. */
+  .pitch{
+    margin:8px 0 12px;padding-left:11px;border-left:3px solid var(--accent);
+    font-size:1rem;line-height:1.45;color:var(--ink);font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Document de travail · à ne pas diffuser aux acheteurs</p>
+    <h1>Variantes de page — 9785-9789, rue André-Jobin</h1>
+    <p class="lede">Quatre pages pour deux acheteurs très différents — trois versions pour le propriétaire-occupant, une pour l’investisseur. Les aperçus ci-dessous sont les vraies pages, pas des images. Clique sur « Ouvrir » pour les parcourir en entier.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="sec" style="margin-top:28px">
+    <h2>Quatre pages, deux acheteurs</h2>
+    <p class="intro">Même immeuble, même prix, mêmes mentions légales. Ce qui change : à qui on parle, et dans quel ordre on le dit.</p>
+
+    <h3 class="grp">Pour le propriétaire-occupant</h3>
+    <p class="grp-sub">Trois façons de présenter le même dossier au même acheteur. Les chiffres sont identiques partout ; ce qui change, c’est par quoi on commence — l’arithmétique, le logement, ou le quartier.</p>
+    <div class="grid">
+      <article class="card live">
+        <div class="shot"><iframe src="landing-occupant.html" title="Aperçu de la page occupant" loading="lazy" scrolling="no"></iframe><div class="mask"></div></div>
+        <div class="card-body">
+          <span class="badge">Variante A · prête</span>
+          <h3>Propriétaire-occupant</h3>
+          <p class="pitch">Elle vous met devant l’argent tout de suite. Honnête, un peu froid.</p>
+          <p class="aud">Ménage de 180 000 à 230 000 $, environ 250 000 $ de liquide, qui arbitre entre une unifamiliale et un plex.</p>
+          <p class="quote">« Un 6½ de quatre chambres. Trois loyers qui couvrent près de la moitié du versement. »</p>
+          <ul class="kv">
+            <li><b>Mise de fonds</b><span>15 % avec SCHL</span></li>
+            <li><b>Liquidité à dégager</b><span>≈ 217 000 $</span></li>
+            <li><b>Versement mensuel</b><span>6 045 $</span></li>
+            <li><b>Sortie de fonds nette</b><span>4 635 $</span></li>
+            <li><b>Coût réel d’occupation</b><span class="pos">2 648 $ / mois</span></li>
+            <li><b>Louer un 4 chambres</b><span>2 000 – 3 000 $ / mois</span></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" href="landing-occupant.html">Ouvrir la page</a>
+          </div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="shot"><!-- L'aperçu de C est décalé vers le bas : son héros est identique à celui
+               de A, et ce qui la distingue commence juste en dessous. -->
+          <iframe src="landing-occupant-c.html" title="Aperçu de la variante C" loading="lazy" scrolling="no" style="top:-392px;height:2000px"></iframe><div class="mask"></div></div>
+        <div class="card-body">
+          <span class="badge draft">Variante C · à l’essai</span>
+          <h3>Propriétaire-occupant — version désir</h3>
+          <p class="pitch">Elle vous montre le logement avant de parler d’argent.</p>
+          <p class="aud">Même acheteur que la variante A. Trois changements de structure, aucun changement de chiffre.</p>
+          <p class="quote">Même titre que la variante A. Ce qui change, c’est l’ordre dans lequel on parle.</p>
+          <ul class="kv">
+            <li><b>En deuxième</b><span>La vie ici, en photos</span></li>
+            <li><b>Puis</b><span>Le formulaire</span></li>
+            <li><b>Puis</b><span>Achetez-le à deux</span></li>
+            <li><b>L’économie</b><span>Tout à la fin</span></li>
+            <li><b>Photos utilisées</b><span>5 au lieu de 2</span></li>
+            <li><b>Chiffres</b><span>Identiques à la variante A</span></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" href="landing-occupant-c.html">Ouvrir la page</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot"><iframe src="landing-occupant-d.html" title="Aperçu de la variante D" loading="lazy" scrolling="no" style="top:-180px"></iframe><div class="mask"></div></div>
+        <div class="card-body">
+          <span class="badge draft">Variante D · à l’essai</span>
+          <h3>Propriétaire-occupant — version quartier</h3>
+          <p class="pitch">Elle vous vend le quartier avant le logement.</p>
+          <p class="aud">Même acheteur, même structure que C. Ce qui change tient entièrement dans le héros.</p>
+          <p class="quote">« Le métro et les écoles à pied. Un 6½ de quatre chambres à vous. »</p>
+          <ul class="kv">
+            <li><b>Le titre</b><span>Part du quartier</span></li>
+            <li><b>Sous le titre</b><span>8 pastilles d’aménités</span></li>
+            <li><b>Walk Score</b><span>Visible dès l’ouverture</span></li>
+            <li><b>Suite de la page</b><span>Identique à la variante C</span></li>
+            <li><b>Chiffres</b><span>Identiques aux autres</span></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" href="landing-occupant-d.html">Ouvrir la page</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <h3 class="grp">Pour l’investisseur</h3>
+    <p class="grp-sub">Un autre acheteur, d’autres arguments : le terrain, l’emplacement, l’écart entre les loyers en place et le marché.</p>
+    <div class="grid grid-solo">
+      <article class="card">
+        <div class="shot"><iframe src="landing-investisseur.html" title="Aperçu de la page investisseur" loading="lazy" scrolling="no"></iframe><div class="mask"></div></div>
+        <div class="card-body">
+          <span class="badge draft">Variante B · à valider</span>
+          <h3>Investisseur</h3>
+          <p class="pitch">Elle dit franchement ce que le dossier n’est pas, puis vend le terrain.</p>
+          <p class="aud">Détenteur de portes qui cherche un actif de terrain dans un secteur à métro, pas un flux de trésorerie.</p>
+          <p class="quote">« Quatre portes détachées. Un terrain évalué 404 400 $ à distance de marche du métro. »</p>
+          <ul class="kv">
+            <li><b>Mise de fonds</b><span>20 % minimum</span></li>
+            <li><b>Liquidité à dégager</b><span>≈ 277 000 $</span></li>
+            <li><b>Versement mensuel</b><span>5 535 $</span></li>
+            <li><b>Flux de trésorerie</b><span class="neg">− 2 805 $ / mois</span></li>
+            <li><b>Coût réel de détention</b><span>986 $ / mois</span></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" href="landing-investisseur.html">Ouvrir la page</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="note">
+      <h4>A ou C ? Ce qui les sépare</h4>
+      <p>Les deux disent exactement la même chose, avec les mêmes chiffres et les mêmes mentions légales. <strong>La variante A convainc, la variante C séduit d’abord.</strong> A ouvre sur l’arithmétique : crédible, mais personne ne tombe amoureux d’un tableau d’amortissement. C montre d’abord la cour, le salon, l’entrée — et rappelle qu’un quatre chambres ne se trouve pratiquement pas en location — avant de chiffrer.</p>
+      <p>C place aussi <strong>le formulaire juste sous le héros</strong>. Un visiteur venu d’une publicité n’a plus toute la page à parcourir pour laisser ses coordonnées. À l’inverse, il le voit avant d’être convaincu : plus de formulaires remplis, peut-être moins bien qualifiés. <strong>C’est le test à faire trancher par les chiffres de campagne, pas par l’opinion.</strong></p>
+      <p>Enfin, C <strong>renvoie l’économie tout à la fin</strong>. A ouvre par les chiffres pour écarter d’emblée ceux qui ne peuvent pas suivre ; C laisse d’abord naître l’envie et ne chiffre qu’au moment de conclure, avec un dernier appel au dossier. Deux philosophies opposées du même dossier : l’une filtre tôt, l’autre convainc d’abord.</p>
+    </div>
+
+    <div class="note">
+      <h4>Nouveau sur les variantes A et C — à l’essai</h4>
+      <p>Deux ajouts du 17 novembre. Le bandeau sombre s’appelle désormais <strong>« L’économie du dossier, pour votre famille »</strong> et raconte une suite en quatre temps — ce que vous payez, ce qui vous revient, ce que ça coûte vraiment, ce que coûterait de louer — avant de répondre à la seule question qui compte : qu’est-ce que vous y gagnez.</p>
+      <p>Et une mini-section <strong>« Trop cher pour un seul ménage ? Achetez-le à deux »</strong>, en famille ou entre amis. Elle s’attaque à la vraie objection du dossier, qui n’est pas le versement mais les 217 000 $ de liquidité. <strong>Elle est à valider avant diffusion</strong> : les conditions d’un prêt en copropriété indivise doivent être confirmées par un prêteur, et la SCHL n’assure pas ce type de prêt — la mise de fonds y passe à 20 %.</p>
+    </div>
+
+    <div class="note">
+      <h4>Le garage — une question pour Anne Luisa</h4>
+      <p>La porte sectionnelle est bien visible sous le balcon sur <code>wa-005</code>, et la photo est dans la deuxième section de la variante C : le garage parle de lui-même. Reste une question d’usage, pas d’existence — <strong>est-il inclus avec le 6½ ou loué à un locataire ?</strong> La réponse changerait seulement la formulation, pas la photo.</p>
+    </div>
+
+    <div class="note warn">
+      <h4>Le chiffre qui décide de tout</h4>
+      <p>L’investisseur sort <strong>2 805 $ de sa poche chaque mois</strong> à 20 % de mise de fonds. L’immeuble ne s’autofinance qu’à partir d’environ 60 % de mise de fonds. C’est pour ça que la variante B ne promet aucun rendement : elle vend le terrain, l’emplacement et l’écart entre les loyers en place et le marché, et elle dit franchement ce que le dossier n’est pas.</p>
+      <p>C’est exactement ce que dit Anne Luisa : la propriété n’est pas rentable, comme presque tous les plex de l’île, et les gens achètent quand même. La page le reconnaît au lieu de le cacher.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Les deux acheteurs, côte à côte</h2>
+    <p class="intro">Mise de fonds minimale réaliste pour chacun, amortissement de 25 ans, taux de 4,5 %. Les dépenses d’exploitation sont estimées à 1 330 $ par mois dans les deux cas.</p>
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">&nbsp;</th><th scope="col">Occupant · 15 % SCHL</th><th scope="col">Investisseur · 20 %</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Mise de fonds</th><td>187 500 $</td><td>250 000 $</td></tr>
+          <tr><th scope="row">Prime SCHL ajoutée au prêt</th><td>29 750 $</td><td>—</td></tr>
+          <tr><th scope="row">TVQ sur la prime, comptant</th><td>2 678 $</td><td>—</td></tr>
+          <tr><th scope="row">Droits de mutation</th><td>21 076 $</td><td>21 076 $</td></tr>
+          <tr><th scope="row">Frais de clôture divers</th><td>≈ 5 700 $</td><td>≈ 5 700 $</td></tr>
+          <tr><th scope="row"><strong>Liquidité totale</strong></th><td><strong>≈ 217 000 $</strong></td><td><strong>≈ 277 000 $</strong></td></tr>
+          <tr><th scope="row">Versement mensuel</th><td>6 045 $</td><td>5 535 $</td></tr>
+          <tr><th scope="row">Loyers encaissés</th><td>2 740 $ <span style="color:var(--ink-faint)">(3 logements)</span></td><td>4 240 $ <span style="color:var(--ink-faint)">(4 logements)</span></td></tr>
+          <tr><th scope="row">Sortie de fonds nette</th><td>4 635 $</td><td class="neg">2 805 $</td></tr>
+          <tr><th scope="row">Capital remboursé chaque mois</th><td>1 987 $</td><td>1 819 $</td></tr>
+          <tr><th scope="row">Il se loge</th><td>Oui — un 6½ de 4 chambres</td><td>Non</td></tr>
+          <tr><th scope="row">Revenu requis pour se qualifier</th><td>183 000 – 234 000 $</td><td>Selon le portefeuille existant</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h4>Pourquoi l’occupant est le meilleur acheteur de ce dossier</h4>
+      <p>Il sort plus d’argent chaque mois — 4 635 $ contre 2 805 $ — mais il reçoit en échange un logement qu’il n’a plus à louer ailleurs. Un 6½ comparable se loue 2 000 à 2 400 $ dans Ahuntsic. Son coût réel d’occupation tombe donc autour de 2 648 $, pendant que l’investisseur, lui, paie 2 805 $ pour ne rien habiter.</p>
+      <p>C’est la seule lecture où l’arithmétique de ce prix devient favorable, parce que le loyer qu’on cesse de payer est un revenu qui ne s’impose pas. D’où 70 % du budget publicitaire sur la variante A.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>À vérifier avant de choisir</h2>
+    <div class="note warn">
+      <h4>Le 6½ est-il libre à la prise de possession ?</h4>
+      <p>La variante A repose entièrement là-dessus. Les photos montrent un 6½ meublé et habité, et la fiche indique « selon les baux ». Si c’est le propriétaire actuel qui y vit, tout tient. Si c’est un locataire, il faut une reprise de logement devant le Tribunal administratif du logement — avis, délais, indemnité possible, refus possible. <strong>Dans ce cas la variante A ne peut pas être publiée telle quelle</strong>, et la variante B devient la seule utilisable.</p>
+    </div>
+    <div class="note">
+      <h4>Le registre des loyers</h4>
+      <p>La répartition des 50 880 $ entre les quatre logements est une hypothèse, pas une donnée : 6½ à 1 500 $, 4½ à 1 050 $, deux 3½ à 850 $ et 840 $. Tous les chiffres de cette page en dépendent. Il faut les baux réels.</p>
+    </div>
+    <div class="note">
+      <h4>Validation par un courtier hypothécaire</h4>
+      <p>Les scénarios de financement sont illustratifs. Trois points à confirmer : qu’un prêteur accepte un 4 logements assuré à 85 %, comment il traite le revenu locatif dans la qualification, et le taux réel du moment.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Document de travail.</strong> Il se partage entre nous et avec la courtière, jamais avec un acheteur : il contient des hypothèses de financement et des estimations de dépenses. Les pages d’atterrissage, elles, portent les mentions OACIQ complètes — et un bandeau rouge qui rappelle qu’elles sont des maquettes tant que le formulaire n’est pas branché.</p>
+    <p>Chiffres au 17 novembre 2026. Sources : fiche Centris nº 16713528, rôle d’évaluation municipale 2026, barème des droits de mutation de la Ville de Montréal pour 2026, règles de la SCHL pour l’assurance prêt hypothécaire — produit Achat. Les dépenses d’exploitation, la répartition des loyers et les taux d’intérêt sont des estimations.</p>
+    <p>Détail complet des calculs : <code>financement-et-argumentaire.md</code>.</p>
+  </div>
+</footer>
+
+</body>
+</html>

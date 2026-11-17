@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+<meta charset="utf-8">
+<!-- Dossier de revue : jamais indexé. Cette page porte le nom et la marque
+     d'une courtière et son formulaire n'est pas branché — elle ne doit
+     apparaître dans aucun moteur de recherche. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quadruplex André-Jobin</title>
+<meta name="variante" content="occupant-c">
+<meta name="description" content="Quadruplex détaché à vendre dans Ahuntsic-Cartierville : un 6½ de 4 chambres pour vous, 3 logements loués. 1 250 000 $. Nº Centris 16713528.">
+
+<!-- ========================================================================
+     MAQUETTE — NE PAS METTRE EN PRODUCTION TELLE QUELLE
+
+     Ceci est une maquette fonctionnelle destinée au développeur. Elle montre
+     la mise en page, la hiérarchie du contenu, les états du formulaire et le
+     comportement responsive. Elle n'est pas le livrable final.
+
+     >>> LIS « spec-dev.md » AVANT DE COMMENCER. <<<
+
+     Ce devis précise ce qui est normatif (contenu, chiffres, contrat du
+     formulaire, mentions OACIQ, critères d'acceptation) et ce qui ne l'est pas
+     (organisation du CSS, logique JS, choix du stack).
+
+     Repères rapides :
+     - §2  source de vérité des données — ne modifier AUCUN chiffre
+     - §3  jetons de couleur et points de rupture (repris du <style> ci-dessous)
+     - §5  contrat du formulaire : champs, validation, charge utile, états
+     - §8  mentions légales obligatoires — le pied de page se reproduit tel quel
+     - §10 critères d'acceptation
+
+     Dans cette maquette : FORM_ENDPOINT est vide (bloc CONFIG en bas du
+     fichier), donc le formulaire bascule volontairement sur son état de
+     secours. C'est le comportement à reproduire en cas d'échec réseau.
+     ===================================================================== -->
+
+<style>
+  :root{
+    --ink:#14171a;
+    --ink-soft:#4a5157;
+    --ink-faint:#7b8288;
+    --paper:#ffffff;
+    --paper-warm:#faf8f5;
+    --paper-deep:#f1ede7;
+    --line:#e2ddd5;
+    --accent:#0b4f6c;
+    --accent-deep:#073a50;
+    --accent-wash:#eaf2f6;
+    --signal:#b4531f;
+    --max-w:1100px;
+    --r:10px;
+    --shadow:0 1px 2px rgba(20,23,26,.05), 0 8px 24px -12px rgba(20,23,26,.14);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.ui{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  h1,h2,h3{line-height:1.15;letter-spacing:-.02em;margin:0}
+  p{margin:0}
+  a{color:var(--accent)}
+  img{display:block;max-width:100%;height:auto}
+  .wrap{max-width:var(--max-w);margin:0 auto;padding:0 16px}
+  .stack > * + *{margin-top:var(--gap,1rem)}
+
+  /* ---------- barre courtière ---------- */
+  .topbar{
+    background:var(--accent-deep);color:#fff;
+    font:600 13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    letter-spacing:.01em;
+  }
+  .topbar .wrap{
+    display:flex;flex-wrap:wrap;gap:6px 20px;
+    align-items:center;justify-content:space-between;
+    padding-top:10px;padding-bottom:10px;
+  }
+  .topbar a{color:#fff;text-decoration:none;white-space:nowrap}
+  .topbar a:hover{text-decoration:underline}
+  .topbar .agency{opacity:.82;font-weight:500}
+
+  /* ---------- héros ---------- */
+  .hero{
+    position:relative;
+    background:var(--paper-deep);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1fr;gap:0;
+    max-width:var(--max-w);margin:0 auto;
+  }
+  /* L'original du courtier est en paysage (2000 x 1500), sans filigrane.
+     Le ratio 4/3 reprend celui de la photo : aucun recadrage, donc la
+     façade entière reste visible. object-position descend légèrement le
+     cadrage pour garder le bâtiment plutôt que le ciel. */
+  .hero-media{
+    position:relative;
+    aspect-ratio:4/3;
+    background:
+      linear-gradient(135deg,#d9d2c7,#c4bcae 60%,#b3aa9c);
+  }
+  .hero-media picture{display:block;width:100%;height:100%}
+  .hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+  .hero-media .ph{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:24px;color:#6b6456;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  .hero-media .ph[hidden]{display:none}
+  .hero-media .ph > div{
+    border:1.5px dashed #a79e8e;border-radius:12px;
+    padding:28px 26px;max-width:320px;background:rgba(255,255,255,.34);
+  }
+  .ph-title{font-weight:700;font-size:14px;letter-spacing:.09em;text-transform:uppercase;margin-top:12px}
+  .ph-file{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;margin-top:8px;color:#554f44}
+  .ph-note{font-size:12px;line-height:1.5;margin-top:12px;color:#7a7265}
+  .hero-body{padding:36px 16px 44px}
+  .eyebrow{
+    font:700 12px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--signal);
+  }
+  .hero h1{font-size:clamp(2rem,6.2vw,3.1rem);font-weight:700;margin-top:12px;text-wrap:balance}
+  @media (min-width:700px){ .hero h1 .h1b{display:block} }
+  .hero .sub{font-size:clamp(1.05rem,2.6vw,1.2rem);color:var(--ink-soft);margin-top:14px;max-width:34em}
+  /* Les deux montants sont présentés en vis-à-vis, chacun sous son étiquette.
+     L'étiquette est ce qui empêche de les confondre : un prix d'achat et un
+     revenu annuel potentiel ne sont pas de même nature. Les filets et les
+     étiquettes reprennent le vocabulaire du bandeau de chiffres plus bas. */
+  .price-row{
+    display:grid;grid-template-columns:auto auto;justify-content:start;
+    margin-top:26px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .pr-item{padding:14px 28px 15px 0}
+  .pr-rev{padding-left:28px;padding-right:0;border-left:1px solid var(--line)}
+  .pr-label{
+    display:block;margin-bottom:9px;
+    font:700 10px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .pr-value{
+    display:block;letter-spacing:-.025em;
+    font:700 clamp(1.55rem,4.6vw,2rem)/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  .pr-rev .pr-value{font-size:clamp(1.2rem,3.4vw,1.45rem);color:var(--accent)}
+  /* Sans période, 50 880 $ se lit aussi bien comme un montant mensuel. */
+  .pr-per{
+    margin-left:7px;font-size:.72rem;font-weight:400;letter-spacing:0;
+    color:var(--ink-faint);white-space:nowrap;
+  }
+  .addr{margin-top:12px;color:var(--ink-soft);font-size:.95rem}
+  /* Sous 430 px les deux colonnes ne tiennent plus : elles s'empilent et le
+     filet vertical devient un filet horizontal. */
+  @media (max-width:430px){
+    .price-row{grid-template-columns:1fr}
+    .pr-item{padding-right:0}
+    .pr-rev{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  }
+  .assump{margin-top:12px;max-width:44ch;color:var(--ink-faint);font-size:.76rem;line-height:1.5}
+  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:48px;padding:0 22px;border-radius:var(--r);
+    font:600 15px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    text-decoration:none;cursor:pointer;border:1px solid transparent;
+    transition:background .15s,border-color .15s,transform .05s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-deep)}
+  .btn-ghost{background:transparent;color:var(--accent);border-color:#c3d4dd}
+  .btn-ghost:hover{background:var(--accent-wash)}
+
+  /* ---------- bandeau chiffres ---------- */
+  .facts{background:var(--accent-deep);color:#fff}
+  .facts ul{
+    list-style:none;margin:0;padding:0;
+    display:grid;grid-template-columns:repeat(2,1fr);
+  }
+  .facts li{
+    padding:24px 18px 26px;
+    border-top:1px solid rgba(255,255,255,.13);
+    border-right:1px solid rgba(255,255,255,.13);
+  }
+  .facts li:nth-child(2n){border-right:0}
+  .facts li:nth-child(-n+2){border-top:0}
+  .facts-head{padding:46px 16px 30px;max-width:46ch}
+  .facts-kicker{
+    margin:0 0 12px;
+    font:700 11px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.13em;text-transform:uppercase;opacity:.55;
+  }
+  .facts-head h2{
+    margin:0;color:#fff;font-size:clamp(1.4rem,3.2vw,2rem);line-height:1.2;
+    letter-spacing:-.02em;text-wrap:balance;
+  }
+  .facts-lede{margin:12px 0 0;opacity:.72;font-size:.98rem;line-height:1.55}
+  /* La case de comparaison est la seule qui ne décrit pas ce dossier mais
+     l'alternative. C'est là que se fait la décision, d'où l'accent. */
+  .facts li.hl{background:rgba(255,255,255,.07)}
+  .facts dt .step{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:18px;height:18px;margin-right:7px;border-radius:50%;
+    background:rgba(255,255,255,.16);font-size:10px;font-weight:700;
+    letter-spacing:0;vertical-align:-3px;
+  }
+  /* La conclusion du bandeau. Sans elle, les quatre chiffres restent une
+     liste : c'est ce paragraphe qui dit ce que la famille y gagne. */
+  .facts-payoff{
+    padding:30px 18px 6px;max-width:62ch;
+    border-top:1px solid rgba(255,255,255,.13);
+  }
+  .facts-payoff h3{
+    margin:22px 0 12px;color:#ffd9a8;
+    font-size:clamp(1.15rem,2.6vw,1.4rem);letter-spacing:-.015em;
+  }
+  .facts-payoff p{margin:0 0 14px;font-size:1rem;line-height:1.62;opacity:.92}
+  .facts-payoff strong{color:#fff;font-weight:700}
+  .facts-payoff .lead-in{
+    display:block;margin-bottom:5px;color:#ffd9a8;
+    font-size:1.05rem;letter-spacing:-.01em;
+  }
+  .facts li.hl dd{color:#ffd9a8}
+  /* Cette note porte les hypothèses des quatre montants. Sans elle, le bandeau
+     avance des chiffres invendables. Elle ne se retire pas, ne se replie pas
+     derrière un lien, et ne descend pas sous 11 px. */
+  .facts-note{
+    margin:0;padding:16px;border-top:1px solid rgba(255,255,255,.13);
+    font-size:.72rem;line-height:1.55;opacity:.68;max-width:78ch;
+  }
+  .facts dt{
+    font:600 11px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.1em;text-transform:uppercase;opacity:.72;
+  }
+  .facts dd{
+    margin:8px 0 0;
+    font:700 clamp(1.45rem,3.4vw,1.8rem)/1.08 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:-.025em;
+  }
+  .facts dd small{display:block;font-weight:500;font-size:.72rem;opacity:.7;letter-spacing:0;margin-top:5px;line-height:1.4}
+  /* Réserve de lecture : plus petite que la description, pour qu'elle ne
+     concurrence pas le montant, mais présente — ce qu'elle annonce est
+     certain, pas hypothétique. D'où « s'ajoutent » et non « pourraient ». */
+  .facts dd .caveat{
+    display:block;margin-top:7px;font-size:.645rem;line-height:1.5;
+    opacity:.62;font-style:italic;
+  }
+  /* Le détail du calcul, sous chaque montant. Il n'est pas décoratif : c'est
+     ce qui rend l'affirmation vérifiable sur place, sans aller chercher la
+     note de bas de bandeau. Les montants affichés s'additionnent exactement
+     — si tu changes un arrondi, refais les trois autres. */
+  .facts .calc abbr{
+    text-decoration:none;cursor:help;color:#ffd9a8;font-weight:700;
+    padding-left:1px;
+  }
+  .facts .calc{
+    margin:12px 0 0;padding:9px 11px;border-radius:7px;
+    background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.08);
+    font:500 .69rem/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:0;opacity:.78;font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0}
+  .alt{background:var(--paper-warm);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .section-head{max-width:40em}
+  .section-head h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:700}
+  .section-head p{color:var(--ink-soft);margin-top:12px}
+
+  /* ---------- l'idée ---------- */
+  .units{
+    display:grid;gap:12px;margin-top:32px;
+    grid-template-columns:1fr;
+  }
+  .unit{
+    border:1px solid var(--line);border-radius:var(--r);
+    background:var(--paper);padding:20px;box-shadow:var(--shadow);
+  }
+  .unit.you{border-color:var(--accent);border-width:2px;background:var(--accent-wash)}
+  /* La photo saigne jusqu'aux bords de la carte : marges négatives égales au
+     padding de .unit, moins la bordure de 2px propre à .unit.you. Le ratio est
+     réservé en CSS pour que rien ne saute pendant le chargement (CLS). */
+  .unit-media{
+    margin:-20px -20px 16px;border-radius:calc(var(--r) - 2px) calc(var(--r) - 2px) 0 0;
+    overflow:hidden;aspect-ratio:3/2;background:#d9d2c7;
+  }
+  .unit-media picture{display:block;width:100%;height:100%}
+  .unit-media img{width:100%;height:100%;object-fit:cover;object-position:50% 55%;display:block}
+  .unit-media figcaption{display:none}
+  .unit .tag{
+    font:700 11px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .unit.you .tag{color:var(--accent)}
+  .unit h3{font-size:1.25rem;margin-top:10px;font-weight:700}
+  .units-foot{
+    margin:26px 0 0;max-width:62ch;color:var(--ink-soft);font-size:.95rem;
+  }
+  .units-foot a{color:var(--accent);font-weight:600}
+  .unit p{color:var(--ink-soft);font-size:.95rem;margin-top:8px}
+
+  /* ---------- quartier ---------- */
+  .amen{
+    list-style:none;padding:0;margin:28px 0 0;
+    display:grid;gap:10px;grid-template-columns:1fr;
+  }
+  .amen li{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:12px 14px;background:var(--paper);
+    border:1px solid var(--line);border-radius:8px;font-size:.95rem;
+  }
+  .amen svg{flex:0 0 auto;margin-top:2px;color:var(--accent)}
+  .walk{
+    display:flex;align-items:center;gap:16px;margin-top:28px;
+    padding:18px 20px;border-radius:var(--r);
+    background:var(--accent-wash);border:1px solid #cfe0e8;
+  }
+  .walk .num{font:700 2.4rem/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--accent);letter-spacing:-.03em}
+  .walk p{font-size:.9rem;color:var(--ink-soft)}
+  .walk strong{color:var(--ink)}
+
+  /* ---------- détails ---------- */
+  .spec{width:100%;border-collapse:collapse;margin-top:28px;font-size:.95rem}
+  .spec th,.spec td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  .spec th{
+    font:600 12px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);
+    width:48%;padding-right:16px;
+  }
+  .spec td{font-weight:600}
+
+  /* ---------- formulaire ---------- */
+  .form-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:28px 20px;box-shadow:var(--shadow);margin-top:32px;
+  }
+  .field{margin-top:18px}
+  .field:first-child{margin-top:0}
+  label{
+    display:block;
+    font:600 13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:.01em;margin-bottom:7px;
+  }
+  .req{color:var(--signal)}
+  input[type=text],input[type=email],input[type=tel],select,textarea{
+    width:100%;padding:12px 13px;font-size:16px;font-family:inherit;
+    color:var(--ink);background:var(--paper);
+    border:1px solid #cfc9bf;border-radius:8px;
+    min-height:48px;
+  }
+  textarea{min-height:104px;resize:vertical;line-height:1.5}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237b8288' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+  input:focus,select:focus,textarea:focus{
+    outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);
+  }
+  .choices{display:grid;gap:8px;grid-template-columns:1fr}
+  .choice{
+    display:flex;gap:11px;align-items:flex-start;
+    padding:14px;border:1px solid #cfc9bf;border-radius:8px;cursor:pointer;
+    font-size:.95rem;background:var(--paper);
+  }
+  .choice:has(input:checked){border-color:var(--accent);border-width:2px;padding:13px;background:var(--accent-wash)}
+  .choice input{margin:3px 0 0;flex:0 0 auto;width:18px;height:18px;accent-color:var(--accent)}
+  .choice b{display:block;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:.95rem}
+  .choice span{display:block;color:var(--ink-soft);font-size:.86rem;margin-top:3px;line-height:1.45}
+  .consent{display:flex;gap:11px;align-items:flex-start;margin-top:20px;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+  .consent input{margin:2px 0 0;flex:0 0 auto;width:17px;height:17px;accent-color:var(--accent)}
+  .form-card .btn-primary{width:100%;margin-top:22px;min-height:52px;font-size:16px}
+  .form-note{font-size:.82rem;color:var(--ink-faint);margin-top:14px;text-align:center;line-height:1.5}
+  .err{color:#9c2b12;font-size:.85rem;margin-top:7px;display:none}
+  .field.invalid .err{display:block}
+  .field.invalid input,.field.invalid select{border-color:#9c2b12}
+
+  .fallback{
+    display:none;margin-top:18px;padding:18px;border-radius:10px;
+    background:#fdf6ec;border:1px solid #e8d4b0;font-size:.92rem;line-height:1.55;
+  }
+  .fallback.on{display:block}
+  .fallback h3{font-size:1rem;font-weight:700}
+  .fallback p{margin-top:8px;color:var(--ink-soft)}
+  .fallback .tel{
+    display:inline-block;margin-top:12px;font-weight:700;font-size:1.15rem;
+    color:var(--accent);text-decoration:none;
+  }
+  .ok{
+    display:none;text-align:center;padding:36px 20px;
+  }
+  .ok.on{display:block}
+  .ok .check{
+    width:52px;height:52px;margin:0 auto 16px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ok h3{font-size:1.3rem;font-weight:700}
+  .ok p{color:var(--ink-soft);margin-top:10px}
+
+  /* ---------- pied ---------- */
+  footer{background:var(--paper-deep);border-top:1px solid var(--line);padding:40px 0 48px}
+  .broker{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+  .broker-id h3{font-size:1.15rem;font-weight:700}
+  .broker-id .title{color:var(--ink-soft);font-size:.92rem;margin-top:4px}
+  .broker-id .agency{font-weight:700;margin-top:10px;font-size:.95rem}
+  .broker-id .agency span{display:block;font-weight:400;color:var(--ink-soft);font-size:.88rem;margin-top:3px}
+  .broker-id .tel{display:inline-block;margin-top:14px;font-weight:700;font-size:1.2rem;color:var(--accent);text-decoration:none}
+  .legal{
+    margin-top:30px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:.78rem;line-height:1.6;color:var(--ink-faint);max-width:62em;
+  }
+  .legal p + p{margin-top:9px}
+
+  @media (min-width:700px){
+    .facts ul{grid-template-columns:repeat(4,1fr)}
+    .facts li{border-top:0}
+    .facts li:last-child{border-right:0}
+    .units{grid-template-columns:repeat(2,1fr)}
+    .unit.you{grid-column:1/-1}
+    .amen{grid-template-columns:repeat(2,1fr)}
+    .choices{grid-template-columns:repeat(2,1fr)}
+    .form-card{padding:34px}
+  }
+  @media (min-width:960px){
+    .hero-grid{grid-template-columns:1.05fr .95fr;align-items:stretch}
+    .hero-media{aspect-ratio:auto;min-height:480px;order:2}
+    .hero-body{padding:64px 48px 64px 16px;display:flex;flex-direction:column;justify-content:center;order:1}
+    section{padding:76px 0}
+    .units{grid-template-columns:repeat(3,1fr)}
+    .unit.you{grid-column:auto}
+    .form-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+    .form-layout .form-card{margin-top:0}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{.topbar,.cta-row,.form-card{display:none}}
+
+  /* ------------------------------------------------------------------
+     MAQUETTE SEULEMENT — À SUPPRIMER EN PRODUCTION
+     Bouton de retour vers le tableau de bord des variantes. Il n'appartient
+     pas à la page : le devis interdit toute navigation et tout lien sortant
+     sur une page d'atterrissage (ils font fuir le visiteur hors de
+     l'entonnoir). Le script plus bas le retire de lui-même dès que la page
+     n'est pas servie depuis un hôte local, pour qu'il ne puisse pas se
+     retrouver en ligne par oubli.
+     ------------------------------------------------------------------ */
+  .mock-back{
+    position:fixed;left:16px;bottom:16px;z-index:999;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 15px;border-radius:999px;text-decoration:none;
+    background:#15191c;color:#fff;border:1px solid rgba(255,255,255,.18);
+    font:600 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    box-shadow:0 2px 6px rgba(0,0,0,.2),0 10px 28px rgba(0,0,0,.22);
+  }
+  .mock-back:hover{background:#000}
+  .mock-back:focus-visible{outline:2px solid #6fb4d4;outline-offset:3px}
+  .mock-back svg{flex:0 0 auto}
+  .mock-back small{
+    font-weight:400;opacity:.62;font-size:11px;letter-spacing:.02em;
+    padding-left:9px;margin-left:2px;border-left:1px solid rgba(255,255,255,.22);
+  }
+  @media print{ .mock-back{display:none} }
+
+  /* ------------------------------------------------------------------
+     Variante C — section « La vie ici ». Elle existe parce que la variante A
+     ouvrait sur de l'arithmétique : juste, crédible, et sans aucun désir.
+     Ici on montre d'abord à quoi ressemble la vie dans cet immeuble, et on
+     chiffre ensuite. Trois photos, pas une.
+     ------------------------------------------------------------------ */
+  .life-grid{
+    display:grid;gap:10px;margin-top:30px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width:700px){
+    .life-grid{grid-template-columns:1.4fr 1fr 1fr}
+  }
+  .life-fig{margin:0;border-radius:var(--r);overflow:hidden;background:#d9d2c7;position:relative}
+  .life-fig img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  .life-fig figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:26px 14px 11px;
+    background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,0));
+    color:#fff;font-size:.8rem;line-height:1.35;
+  }
+  .life-points{
+    list-style:none;margin:28px 0 0;padding:0;
+    display:grid;gap:14px 28px;grid-template-columns:1fr;max-width:70ch;
+  }
+  @media (min-width:700px){ .life-points{grid-template-columns:1fr 1fr} }
+  .life-points li{display:flex;gap:11px;font-size:.98rem;line-height:1.55;color:var(--ink-soft)}
+  .life-points b{color:var(--ink)}
+  .life-points svg{flex:0 0 auto;margin-top:5px;color:var(--accent)}
+
+  .facts-cta{background:var(--accent-wash);border-top:1px solid var(--line);padding:34px 0}
+  .facts-cta .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between}
+  .facts-cta p{margin:0;max-width:52ch;color:var(--ink-soft);font-size:.98rem}
+
+  /* Bandeau de revue. Il dit à quiconque ouvre le lien que ce n'est pas la
+     page publiée : le formulaire n'envoie rien et les chiffres sont des
+     illustrations. Il se retire en même temps que .mock-back. */
+  .mock-flag{
+    position:relative;z-index:60;
+    background:#8a3b12;color:#fff;text-align:center;
+    padding:9px 16px;font:600 12.5px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  .mock-flag b{font-weight:800;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<!-- Bandeau de revue — À SUPPRIMER EN PRODUCTION, comme .mock-back. -->
+<div class="mock-flag"><b>MAQUETTE</b> — page de revue. Le formulaire n’envoie rien et les montants sont des illustrations, pas une offre de financement.</div>
+
+
+<div class="topbar">
+  <div class="wrap">
+    <span><strong>Ana Luisa Elgueta</strong> <span class="agency">&middot; RE/MAX Immobilia inc., agence immobilière</span></span>
+    <a href="tel:+15149991689">514&nbsp;999-1689</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-media">
+      <!-- Original du courtier (2000 x 1500, sans filigrane), redimensionné en
+           700 / 1000 / 1400 px, JPEG + WebP. Servi depuis notre propre
+           hébergement : aucun lien vers le CDN de Centris. Voir spec-dev.md §9.
+           Source : 01-Photos/01-exterieur/wa-010. -->
+      <picture>
+        <source type="image/webp"
+                srcset="images/facade-700.webp 700w, images/facade-1000.webp 1000w, images/facade-1400.webp 1400w"
+                sizes="(min-width:960px) 48vw, 100vw">
+        <img src="images/facade.jpg"
+             srcset="images/facade-700.jpg 700w, images/facade-1000.jpg 1000w, images/facade-1400.jpg 1400w"
+             sizes="(min-width:960px) 48vw, 100vw"
+             width="2000" height="1500"
+             alt="Façade en brique du quadruplex du 9785-9789, rue André-Jobin, avec son escalier extérieur"
+             loading="eager" fetchpriority="high" decoding="async"
+             onerror="this.closest('picture').remove();document.getElementById('photo-ph').hidden=false">
+      </picture>
+      <div class="ph" id="photo-ph" hidden>
+        <div>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 7h3l2-2h8l2 2h3v12H3z"/><circle cx="12" cy="13" r="3.6"/>
+          </svg>
+          <p class="ph-title">Photo de façade</p>
+          <p class="ph-file">images/facade.jpg</p>
+          <p class="ph-note">1600 × 1200 px minimum — fournie par le photographe immobilier</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-body">
+      <p class="eyebrow">Ahuntsic-Cartierville &middot; Nº Centris 16713528</p>
+      <!-- Pas de <br> : des retours forcés cassent mal sous 400 px. La deuxième
+           phrase passe en bloc seulement à partir de 700 px, et text-wrap:balance
+           répartit les lignes ailleurs. -->
+      <h1>Un 6½ de quatre chambres. <span class="h1b">Trois loyers qui couvrent près de la moitié du versement.</span></h1>
+      <p class="sub">Un quadruplex détaché pour <strong>propriétaire-occupant</strong> : vous habitez le 6½ de quatre chambres, les trois autres logements restent loués, et leurs loyers couvrent près de la moitié du versement hypothécaire mensuel.</p>
+      <div class="price-row">
+        <div class="pr-item">
+          <span class="pr-label">Prix demandé</span>
+          <span class="pr-value">1&nbsp;250&nbsp;000&nbsp;$</span>
+        </div>
+        <!-- OACIQ : le libellé complet « revenus bruts potentiels » est
+             obligatoire et vit dans l'étiquette. Ne l'abrège jamais en
+             « revenus », et n'en déduis aucun taux de rendement. La source est
+             citée dans la note sous le bloc. -->
+        <div class="pr-item pr-rev">
+          <span class="pr-label">Revenus bruts potentiels</span>
+          <span class="pr-value">50&nbsp;880&nbsp;$<span class="pr-per">par année</span></span>
+        </div>
+      </div>
+      <p class="addr">9785&nbsp;-&nbsp;9789, rue André-Jobin, Montréal</p>
+      <!-- Cette note rend vérifiable le « près de la moitié » du titre. Elle est
+           obligatoire : sans ses hypothèses, la proportion est une affirmation
+           invendable. Ne la déplace pas sous un lien, ne la réduis pas. Voir
+           spec-dev.md §8 et financement-et-argumentaire.md. -->
+      <p class="assump">« Près de la moitié » : loyers des trois logements comparés au versement hypothécaire, pour une mise de fonds de 15 % avec assurance SCHL, 25 ans d’amortissement, taux de 4,5 % — soit 45 % du versement. La proportion va d’environ 43 % à 52 % selon le taux et la mise de fonds, et dépend des loyers en vigueur, à confirmer aux baux. Revenus bruts potentiels selon la fiche Centris.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#dossier">Recevoir le dossier complet</a>
+        <a class="btn btn-ghost" href="tel:+15149991689">Appeler maintenant</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <!-- ⚠ « un garage » : à CONFIRMER avant toute mise en ligne. La porte de
+           garage est visible sur la photo wa-005, mais rien ne dit encore si le
+           garage est inclus avec le 6½ ou loué à un locataire par bail séparé.
+           S'il appartient à un locataire, cette mention est trompeuse et doit
+           sortir du titre. Voir 01-Photos/INVENTAIRE.md. -->
+      <h2>Un 6½ de quatre chambres, une cour, un garage et le métro à pied.</h2>
+      <p>Avant les chiffres, ce que ça veut dire au quotidien. <strong>Un 6½ de quatre chambres</strong> dans Ahuntsic-Cartierville, ça ne se trouve presque pas en location — il s’en libère une poignée par année pour tout l’arrondissement. Ici, c’est le vôtre, et trois voisins paient une partie de l’hypothèque.</p>
+    </div>
+    <div class="life-grid">
+        <figure class="life-fig">
+          <picture>
+            <source type="image/webp" srcset="images/cour-600.webp 600w, images/cour-900.webp 900w" sizes="(min-width:700px) 33vw, 100vw">
+            <img src="images/cour.jpg" srcset="images/cour-600.jpg 600w, images/cour-900.jpg 900w" sizes="(min-width:700px) 33vw, 100vw"
+                 alt="Façade du quadruplex vue de la rue, avec la pelouse et les arbres matures" loading="lazy" decoding="async" style="aspect-ratio:4/3">
+          </picture>
+          <figcaption>Un terrain évalué 404 400 $, des arbres matures, pas de mur mitoyen.</figcaption>
+        </figure>
+        <figure class="life-fig">
+          <picture>
+            <source type="image/webp" srcset="images/salon2-600.webp 600w, images/salon2-900.webp 900w" sizes="(min-width:700px) 33vw, 100vw">
+            <img src="images/salon2.jpg" srcset="images/salon2-600.jpg 600w, images/salon2-900.jpg 900w" sizes="(min-width:700px) 33vw, 100vw"
+                 alt="Salon du 6½ avec plancher de bois franc et grandes fenêtres" loading="lazy" decoding="async" style="aspect-ratio:3/4">
+          </picture>
+          <figcaption>Le salon du 6½. Plancher de bois, lumière des deux côtés.</figcaption>
+        </figure>
+        <figure class="life-fig">
+          <picture>
+            <source type="image/webp" srcset="images/entree-600.webp 600w, images/entree-900.webp 900w" sizes="(min-width:700px) 33vw, 100vw">
+            <img src="images/entree.jpg" srcset="images/entree-600.jpg 600w, images/entree-900.jpg 900w" sizes="(min-width:700px) 33vw, 100vw"
+                 alt="Entrée de cour et stationnement le long de l’immeuble" loading="lazy" decoding="async" style="aspect-ratio:4/3">
+          </picture>
+          <figcaption>L’entrée de cour, le stationnement latéral et la porte de garage.</figcaption>
+        </figure>
+    </div>
+    <ul class="life-points">
+      <li><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span><b>Un 6½ de quatre chambres</b> — six pièces, assez pour une famille qui grandit, ou pour deux générations sous le même toit.</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span><b>Walk Score 89</b> — métro, écoles primaires, CPE, cégep et piste cyclable à distance de marche.</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span><b>Un garage</b> — et une place de plus dans l’entrée de cour. L’hiver montréalais, ça compte.</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span><b>Détaché</b> — aucun mur mitoyen, son propre terrain, sa propre entrée de cour.</span></li>
+      <li><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5"/></svg><span><b>Trois voisins qui paient</b> — les logements loués sont dans le bâtiment, pas à l’autre bout de la ville.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- Variante C : le formulaire est remonté juste sous le héros. Le visiteur
+     venu d'une publicité n'a plus à parcourir toute la page pour laisser ses
+     coordonnées, et les deux boutons du héros n'ont qu'un cran à descendre.
+     Le reste de la page sert alors à convaincre ceux qui hésitent encore. -->
+<section class="alt" id="dossier">
+  <div class="wrap">
+    <div class="form-layout">
+      <div class="section-head">
+        <h2>Recevez le dossier complet</h2>
+        <p>Les baux en vigueur, les dépenses d’exploitation, les comparables vendus dans le secteur et les photos de chaque logement. Envoyé par la courtière, en français ou en espagnol.</p>
+        <p style="margin-top:18px;font-size:.92rem">Vous préférez parler tout de suite ?<br>
+          <a href="tel:+15149991689" style="font-weight:700;font-size:1.15rem;text-decoration:none">514&nbsp;999-1689</a>
+        </p>
+      </div>
+
+      <div class="form-card">
+        <form id="lead" novalidate>
+          <div class="field" id="f-name">
+            <label for="name">Votre nom <span class="req">*</span></label>
+            <input type="text" id="name" name="nom" autocomplete="name" required>
+            <p class="err">Entrez votre nom.</p>
+          </div>
+
+          <div class="field" id="f-email">
+            <label for="email">Courriel <span class="req">*</span></label>
+            <input type="email" id="email" name="courriel" autocomplete="email" inputmode="email" required>
+            <p class="err">Entrez une adresse courriel valide.</p>
+          </div>
+
+          <div class="field" id="f-phone">
+            <label for="phone">Téléphone <span class="req">*</span></label>
+            <input type="tel" id="phone" name="telephone" autocomplete="tel" inputmode="tel" placeholder="514 000-0000" required>
+            <p class="err">Entrez un numéro de téléphone.</p>
+          </div>
+
+          <div class="field" id="f-profile">
+            <label>Votre situation <span class="req">*</span></label>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="profil" value="Occupant — habiter le 6½" required>
+                <span><b>J’habiterais le 6½</b><span>Je cherche un logement familial et des revenus locatifs</span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="profil" value="Investisseur">
+                <span><b>Investissement</b><span>Je cherche un immeuble à revenus</span></span>
+              </label>
+            </div>
+            <p class="err">Choisissez une option.</p>
+          </div>
+
+          <div class="field">
+            <label for="timing">Votre échéancier</label>
+            <select id="timing" name="echeancier">
+              <option value="">Je préfère ne pas préciser</option>
+              <option>Prêt à acheter maintenant</option>
+              <option>D’ici 3 mois</option>
+              <option>D’ici 6 à 12 mois</option>
+              <option>J’explore le marché</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="msg">Une question en particulier ?</label>
+            <textarea id="msg" name="message" placeholder="Les loyers actuels, les travaux récents, une visite en soirée…"></textarea>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" name="consentement" value="oui" required id="consent">
+            <span>J’accepte d’être contacté au sujet de cette propriété. Mes coordonnées ne servent qu’à cet échange et ne sont transmises à personne d’autre. <span class="req">*</span></span>
+          </label>
+          <p class="err" id="e-consent" style="margin-left:28px">Cochez la case pour continuer.</p>
+
+          <button type="submit" class="btn btn-primary" id="submit">Recevoir le dossier</button>
+          <p class="form-note">Réponse sous 24 h. Aucune infolettre, aucun partage de vos données.</p>
+        </form>
+
+        <div class="fallback" id="fallback">
+          <h3>Le formulaire n’est pas encore branché</h3>
+          <p>Vos renseignements ont été copiés dans votre presse-papiers. Appelez ou écrivez à la courtière et collez-les — ou rappelez simplement ce numéro&nbsp;:</p>
+          <a class="tel" href="tel:+15149991689">514&nbsp;999-1689</a>
+        </div>
+
+        <div class="ok" id="ok">
+          <div class="check" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>C’est envoyé</h3>
+          <p>Ana Luisa vous écrit sous 24 h avec le dossier complet. Si c’est urgent, appelez au <a href="tel:+15149991689" style="font-weight:700;white-space:nowrap">514&nbsp;999-1689</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- Mini-section à l'essai. Elle s'attaque à la vraie objection du dossier :
+     la liquidité, pas le versement. Prudence : la conversion d'immeubles
+     locatifs en copropriété indivise est sous forte attention politique au
+     Québec en 2026. Cette section ne parle donc PAS de conversion ni de
+     revente par parts — seulement d'acheter l'immeuble à plusieurs et de
+     l'habiter. Les conditions de prêt doivent être confirmées par un prêteur
+     avant toute diffusion. Voir financement-et-argumentaire.md §4bis. -->
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Trop cher pour un seul ménage ? Achetez-le à deux.</h2>
+      <p>La vraie barrière de ce dossier n’est pas le versement mensuel — c’est la liquidité de départ. À deux ménages, elle tombe de moitié. Et un quadruplex est le format qui s’y prête le mieux : chacun son logement, chacun sa porte, sous le même toit.</p>
+    </div>
+    <div class="units">
+      <div class="unit you">
+        <p class="tag">En famille</p>
+        <h3>Deux générations, deux logements</h3>
+        <p>Les parents dans un logement, les enfants dans l’autre. Assez proches pour se garder les petits et se donner un coup de main, assez séparés pour vivre chacun chez soi. Les deux logements restants continuent d’être loués.</p>
+      </div>
+      <div class="unit">
+        <p class="tag">Entre amis</p>
+        <h3>Deux ménages, une seule acquisition</h3>
+        <p>Deux couples achètent ensemble en copropriété indivise. Une convention notariée attribue à chacun l’usage exclusif de son logement, et fixe d’avance les règles : partage des dépenses, décisions, sortie de l’un des deux.</p>
+      </div>
+      <div class="unit">
+        <p class="tag">À savoir avant</p>
+        <h3>Ce que ça change au financement</h3>
+        <p>L’assurance SCHL ne couvre pas la copropriété indivise : la mise de fonds passe à 20&nbsp;%. Tous les prêteurs n’offrent pas ce type de prêt. Et les coacquéreurs répondent du prêt les uns pour les autres. Un notaire et un prêteur doivent valider avant toute offre.</p>
+      </div>
+    </div>
+    <p class="units-foot">Parlez-m’en : je vous mets en lien avec un notaire et un courtier hypothécaire qui montent ce type de dossier. <a href="#dossier">Recevoir le dossier complet</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Quatre logements. Un seul est pour vous.</h2>
+      <p>C’est ce qui distingue ce dossier d’un immeuble à revenus ordinaire : l’unité principale est assez grande pour une famille. Vous n’achetez pas un placement à distance — vous achetez votre maison, avec trois loyers dans le même bâtiment.</p>
+    </div>
+    <div class="units">
+      <div class="unit you">
+        <!-- Salon du 6½ (original du courtier, wa-018). C'est la seule pièce
+             du logement principal qui se montre : la cuisine et la salle de
+             bains sont datées, les chambres sont occupées. Voir
+             01-Photos/INVENTAIRE.md. -->
+        <figure class="unit-media">
+          <picture>
+            <source type="image/webp"
+                    srcset="images/salon-500.webp 500w, images/salon-800.webp 800w, images/salon-1200.webp 1200w"
+                    sizes="(min-width:960px) 32vw, (min-width:700px) 92vw, 100vw">
+            <img src="images/salon.jpg"
+                 srcset="images/salon-500.jpg 500w, images/salon-800.jpg 800w, images/salon-1200.jpg 1200w"
+                 sizes="(min-width:960px) 32vw, (min-width:700px) 92vw, 100vw"
+                 width="2000" height="1500"
+                 alt="Salon du 6½ : plancher de bois franc, lustre et deux divans"
+                 loading="lazy" decoding="async"
+                 onerror="this.closest('.unit-media').remove()">
+          </picture>
+          <figcaption>Le salon du 6½</figcaption>
+        </figure>
+        <p class="tag">Pour vous</p>
+        <h3>Le 6½</h3>
+        <p>6 pièces, 4 chambres, 1 salle de bain. L’espace d’une maison familiale, dans un quartier à distance de marche du métro.</p>
+      </div>
+      <div class="unit">
+        <p class="tag">Loué</p>
+        <h3>Le 4½</h3>
+        <p>Un logement de bonne taille, recherché par les couples et les petites familles du secteur.</p>
+      </div>
+      <div class="unit">
+        <p class="tag">Loués</p>
+        <h3>Deux 3½</h3>
+        <p>Les formats les plus faciles à louer dans Ahuntsic-Cartierville, et les moins coûteux à entretenir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ahuntsic-Cartierville, à pied</h2>
+      <p>Un secteur établi de 135&nbsp;000 personnes, avec une population stable et une moyenne d’âge de 42&nbsp;ans. Ce qui compte pour un plex : la demande locative ne bouge pas.</p>
+    </div>
+    <div class="walk">
+      <span class="num">89</span>
+      <p><strong>Walk Score</strong><br>La plupart des courses se font à pied, sans voiture.</p>
+    </div>
+    <ul class="amen">
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Métro</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Transport en commun</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Écoles primaires</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Garderies et CPE</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Cégep</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Hôpital</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Piste cyclable</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".18"/><circle cx="8" cy="8" r="3"/></svg> Autoroute</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Les chiffres, sans arrondi</h2>
+      <p>Tout ce qui suit vient de la fiche Centris nº 16713528 et du rôle d’évaluation municipale 2026. Les baux, les dépenses réelles et les comparables vendus du secteur sont dans le dossier complet.</p>
+    </div>
+    <table class="spec">
+      <tbody>
+        <tr><th scope="row">Prix demandé</th><td>1&nbsp;250&nbsp;000&nbsp;$</td></tr>
+        <tr><th scope="row">Type de propriété</th><td>Quadruplex détaché, usage résidentiel</td></tr>
+        <tr><th scope="row">Année de construction</th><td>1963</td></tr>
+        <tr><th scope="row">Nombre de logements</th><td>4 — 2&nbsp;x&nbsp;3½, 1&nbsp;x&nbsp;4½, 1&nbsp;x&nbsp;6½</td></tr>
+        <tr><th scope="row">Unité principale</th><td>6 pièces, 4 chambres, 1 salle de bain</td></tr>
+        <tr><th scope="row">Revenus bruts potentiels</th><td>50&nbsp;880&nbsp;$</td></tr>
+        <tr><th scope="row">Évaluation municipale 2026 — terrain</th><td>404&nbsp;400&nbsp;$</td></tr>
+        <tr><th scope="row">Évaluation municipale 2026 — bâtiment</th><td>476&nbsp;200&nbsp;$</td></tr>
+        <tr><th scope="row">Évaluation municipale 2026 — total</th><td>880&nbsp;600&nbsp;$</td></tr>
+        <tr><th scope="row">Date d’emménagement</th><td>Selon les baux</td></tr>
+        <tr><th scope="row">Numéro Centris</th><td>16713528</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- Bandeau propre à la variante occupant. Il ne décrit plus l'immeuble — la
+     fiche Centris s'en charge — mais ce que la décision coûte à une famille,
+     mois par mois. Chaque montant dépend d'hypothèses, d'où la note qui suit :
+     elle est indissociable du bandeau. Voir spec-dev.md §8. -->
+<!-- Bandeau propre à la variante occupant. Il raconte une suite, pas une
+     liste : ce que la famille débourse, ce qui lui revient, ce que ça coûte
+     vraiment, et ce que coûterait l'alternative. Le paragraphe de conclusion
+     répond à la seule question qui compte — qu'est-ce que j'y gagne. Chaque
+     montant dépend d'hypothèses : la note de fin est indissociable du
+     bandeau. Voir spec-dev.md §8. -->
+<div class="facts">
+  <div class="wrap" style="padding:0">
+    <div class="facts-head">
+      <p class="facts-kicker">L’économie du dossier, pour votre famille</p>
+      <h2>1&nbsp;250&nbsp;000&nbsp;$, c’est le prix. Ce n’est pas votre coût.</h2>
+      <p class="facts-lede">Trois des quatre logements sont loués, et leurs locataires remboursent l’hypothèque avec vous. La question qui décide, c’est celle-ci : <strong>combien sort de votre compte chaque mois ?</strong></p>
+    </div>
+    <ul>
+      <li class="hl"><dt><span class="step">1</span> Ce qui sort de votre poche</dt><dd>4&nbsp;635&nbsp;$<small>Par mois. Le versement hypothécaire et les dépenses de l’immeuble, moins les loyers des trois logements déjà loués.<span class="caveat">C’est le montant à pouvoir sortir de votre compte chaque mois.</span></small><p class="calc">6&nbsp;045&nbsp;$ de versement<br>+ 1&nbsp;330&nbsp;$ de dépenses <abbr title="Taxes municipales et scolaires 477 $ — environ 0,65 % de l’évaluation municipale de 880 600 $, seule donnée publique des quatre. Assurance de l’immeuble 300 $, entretien et réserve 450 $, énergie des parties communes et déneigement 100 $ : estimations. Le relevé réel des dépenses du vendeur, qui les remplace, est dans le dossier complet.">*</abbr><br>− 2&nbsp;740&nbsp;$ de loyers <abbr title="Répartition des 50 880 $ de revenus bruts potentiels entre les trois logements loués. À confirmer aux baux en vigueur.">*</abbr></p></dd></li>
+      <li><dt><span class="step">2</span> Ce qui vous revient</dt><dd>1&nbsp;987&nbsp;$<small>Par mois, en capital remboursé. Ce n’est pas une dépense : c’est 23&nbsp;844&nbsp;$ par année qui s’ajoutent à votre patrimoine.</small><p class="calc">6&nbsp;045&nbsp;$ de versement<br>− 4&nbsp;058&nbsp;$ d’intérêts<br>× 12 = 23&nbsp;844&nbsp;$ par année</p></dd></li>
+      <li><dt><span class="step">3</span> Ce que ça coûte vraiment</dt><dd>2&nbsp;648&nbsp;$<small>Par mois, tout compté. La part qui ne revient pas : les intérêts, les taxes, l’assurance et l’entretien.<span class="caveat">À comparer au loyer de la case suivante — c’est la bonne comparaison.</span></small><p class="calc">4&nbsp;635&nbsp;$ qui sortent de votre poche<br>− 1&nbsp;987&nbsp;$ qui vous reviennent</p></dd></li>
+      <li><dt><span class="step">4</span> Louer l’équivalent</dt><dd>2&nbsp;000&nbsp;–&nbsp;3&nbsp;000&nbsp;$<small>Par mois, pour un <strong>4&nbsp;chambres</strong> dans l’arrondissement — quand il s’en libère un. L’offre se compte sur les doigts d’une main.<span class="caveat">Un loyer ne laisse rien derrière lui.</span></small><p class="calc">Loyers demandés — annonces de 4&nbsp;chambres,<br>Ahuntsic-Cartierville, novembre 2026</p></dd></li>
+    </ul>
+
+    <div class="facts-payoff">
+      <h3 style="margin-top:0">D’abord : pouvez-vous le porter ?</h3>
+      <p>C’est la première question, et elle vient avant toutes les autres. <strong>Il faut pouvoir sortir 4&nbsp;635&nbsp;$ de votre compte chaque mois</strong> et disposer d’environ <strong>217&nbsp;000&nbsp;$</strong> au départ. Si ce montant ne passe pas dans votre budget, le reste de cette page n’a pas d’importance — et mieux vaut le savoir maintenant qu’après la visite.</p>
+
+      <h3>Et si oui, qu’est-ce que vous y gagnez ?</h3>
+      <p>Sur ces 4&nbsp;635&nbsp;$, <strong>1&nbsp;987&nbsp;$ vous reviennent</strong> sous forme de capital. Habiter ici vous coûte donc réellement <strong>2&nbsp;648&nbsp;$ par mois</strong> — quand louer un 4&nbsp;chambres dans le secteur en coûte 2&nbsp;000 à 3&nbsp;000&nbsp;$, sans rien accumuler.</p>
+      <p>C’est le cœur du calcul, et il ne dépend d’aucune prévision : <strong>près de 24&nbsp;000&nbsp;$ par année</strong> s’inscrivent à votre bilan, mois après mois, pendant qu’un loyer ne laisse rien derrière lui.</p>
+      <p>Il y a aussi ce que le marché locatif ne vous offrira pas. Des logements de quatre chambres, il s’en libère une poignée par année dans Ahuntsic-Cartierville. Une famille qui en a besoin n’a pratiquement <strong>rien à louer</strong> : acheter est souvent le seul chemin vers cet espace.</p>
+      <p><strong class="lead-in">Et à la retraite ?</strong> C’est là que le calcul prend tout son sens. Aux loyers d’aujourd’hui, vos trois locataires auront versé <strong>plus de 800&nbsp;000&nbsp;$</strong> sur la durée du prêt. Au terme, l’hypothèque est payée : vous habitez sans versement un immeuble de quatre logements qui, lui, continue de produire des loyers. C’est ce que beaucoup de propriétaires de plex au Québec appellent leur <strong>fonds de retraite</strong> — bâti, mois après mois, par leurs locataires.</p>
+    </div>
+
+    <p class="facts-note">Illustration, pas une offre de financement ni un conseil financier. Mise de fonds de 15&nbsp;% avec assurance SCHL, amortissement de 25&nbsp;ans, taux de 4,5&nbsp;%, loyers des trois logements selon les baux à confirmer, dépenses d’exploitation estimées à 1&nbsp;330&nbsp;$ par mois. Sur ces dépenses, <strong>seules les taxes reposent sur une donnée publique</strong> — 477&nbsp;$ par mois, environ 0,65&nbsp;% de l’évaluation municipale de 880&nbsp;600&nbsp;$. L’assurance (300&nbsp;$), l’entretien et la réserve (450&nbsp;$) et l’énergie des parties communes (100&nbsp;$) sont des estimations, et le relevé réel des dépenses du vendeur les remplace toutes : il est dans le dossier complet. Les projections sur 25&nbsp;ans supposent des loyers et des dépenses constants, ce qui n’arrivera pas ; elles ne tiennent compte ni des rendements que votre mise de fonds produirait ailleurs, ni des travaux majeurs, ni de la vacance. Les loyers de comparaison sont des loyers demandés pour des logements de quatre chambres dans des annonces récentes de l’arrondissement, non des moyennes de marché ; l’échantillon est mince, parce que l’offre l’est. Faites valider votre scénario par un courtier hypothécaire et votre comptable.</p>
+  </div>
+</div>
+
+<!-- Variante C : la CTA de fermeture. Le formulaire étant tout en haut, il
+     faut un chemin de retour pour qui vient de lire les chiffres. -->
+<div class="facts-cta">
+  <div class="wrap">
+    <p>Les baux en vigueur, les dépenses réelles du vendeur et les comparables du secteur sont dans le dossier complet.</p>
+    <a class="btn btn-primary" href="#dossier">Recevoir le dossier complet</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="broker">
+      <div class="broker-id">
+        <h3>Ana Luisa Elgueta</h3>
+        <p class="title">Courtier immobilier résidentiel et commercial</p>
+        <p class="agency">RE/MAX Immobilia inc.
+          <span>Agence immobilière<br>2640, Henri-Bourassa Est, Montréal (Québec) H2B 1V6</span>
+        </p>
+        <a class="tel" href="tel:+15149991689">514&nbsp;999-1689</a>
+      </div>
+    </div>
+
+    <div class="legal">
+      <p>Titulaire d’un permis valide de l’Organisme d’autoréglementation du courtage immobilier du Québec (OACIQ). Détient une assurance responsabilité professionnelle. Services offerts en français et en espagnol.</p>
+      <p>Propriété inscrite sous le numéro Centris 16713528. Les revenus bruts potentiels de 50&nbsp;880&nbsp;$ sont ceux publiés à la fiche Centris; il s’agit d’un potentiel et non d’un revenu garanti ou constaté. Les évaluations municipales citées proviennent du rôle d’évaluation 2026 de la Ville de Montréal. Les données démographiques et le Walk Score sont fournis à titre informatif.</p>
+      <p>Les renseignements de cette page sont fournis sans garantie d’exactitude et peuvent être modifiés sans préavis. Ils ne constituent ni une offre, ni une promesse de vente, ni un conseil financier ou fiscal. Tout acheteur doit vérifier les baux, les revenus, les dépenses et l’état du bâtiment avant de faire une offre. Non sollicitation : cette publicité ne vise pas les propriétés déjà inscrites auprès d’un autre courtier.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ======================= CONFIG ======================= */
+  // 1. Collez ici l'URL de votre service de formulaire (Formspree, Basin,
+  //    Netlify Forms, Zapier Webhook...). Laissez vide pour tester la page.
+  var FORM_ENDPOINT = "";
+  // 2. Courriel de la courtière, utilisé seulement en secours.
+  var BROKER_EMAIL  = "";
+  /* ====================================================== */
+
+  var form     = document.getElementById("lead");
+  var okBox    = document.getElementById("ok");
+  var fallback = document.getElementById("fallback");
+  var submit   = document.getElementById("submit");
+  var consent  = document.getElementById("consent");
+  var eConsent = document.getElementById("e-consent");
+
+  function markInvalid(id, bad){
+    var f = document.getElementById(id);
+    if (f) f.classList.toggle("invalid", bad);
+  }
+
+  function validate(){
+    var ok = true;
+
+    var name = form.nom.value.trim();
+    markInvalid("f-name", !name); if (!name) ok = false;
+
+    var mail = form.courriel.value.trim();
+    var mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail);
+    markInvalid("f-email", !mailOk); if (!mailOk) ok = false;
+
+    var tel = form.telephone.value.replace(/[^0-9]/g, "");
+    var telOk = tel.length >= 10;
+    markInvalid("f-phone", !telOk); if (!telOk) ok = false;
+
+    var profile = form.querySelector('input[name="profil"]:checked');
+    markInvalid("f-profile", !profile); if (!profile) ok = false;
+
+    eConsent.style.display = consent.checked ? "none" : "block";
+    if (!consent.checked) ok = false;
+
+    return ok;
+  }
+
+  function collect(){
+    var d = new FormData(form);
+    var o = {};
+    d.forEach(function(v, k){ o[k] = v; });
+    o.propriete = "9785-9789 rue André-Jobin — Nº Centris 16713528";
+    o.variante  = "occupant-c";   // identifie la page d'où vient le lead
+    o.page      = location.href;
+    o.date      = new Date().toLocaleString("fr-CA");
+    return o;
+  }
+
+  function asText(o){
+    return Object.keys(o).map(function(k){
+      return k.charAt(0).toUpperCase() + k.slice(1) + " : " + o[k];
+    }).join("\n");
+  }
+
+  function succeed(){
+    form.style.display = "none";
+    fallback.classList.remove("on");
+    okBox.classList.add("on");
+    okBox.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+
+  function degrade(text){
+    try {
+      if (navigator.clipboard) navigator.clipboard.writeText(text);
+    } catch (e) { /* presse-papiers indisponible : on affiche quand même le numéro */ }
+    fallback.classList.add("on");
+    fallback.scrollIntoView({ block: "center", behavior: "smooth" });
+    submit.disabled = false;
+    submit.textContent = "Recevoir le dossier";
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!validate()){
+      var bad = form.querySelector(".field.invalid");
+      if (bad) bad.scrollIntoView({ block: "center", behavior: "smooth" });
+      return;
+    }
+
+    var data = collect();
+    submit.disabled = true;
+    submit.textContent = "Envoi…";
+
+    if (!FORM_ENDPOINT){
+      degrade(asText(data));
+      return;
+    }
+
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      succeed();
+    }).catch(function(){
+      degrade(asText(data));
+    });
+  });
+
+  // Efface l'erreur dès que le visiteur corrige le champ
+  ["name:f-name", "email:f-email", "phone:f-phone"].forEach(function(pair){
+    var p = pair.split(":");
+    var el = document.getElementById(p[0]);
+    if (el) el.addEventListener("input", function(){ markInvalid(p[1], false); });
+  });
+  form.querySelectorAll('input[name="profil"]').forEach(function(r){
+    r.addEventListener("change", function(){ markInvalid("f-profile", false); });
+  });
+  consent.addEventListener("change", function(){
+    eConsent.style.display = consent.checked ? "none" : "block";
+  });
+})();
+</script>
+
+<!-- MAQUETTE SEULEMENT — À SUPPRIMER EN PRODUCTION. Voir .mock-back dans la
+     feuille de style. Le script qui suit l'enlève hors d'un hôte local. -->
+<a class="mock-back" href="tableau-de-bord.html" data-maquette="true">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M10 13L5 8l5-5"/>
+  </svg>
+  Retour aux variantes<small>Variante C</small>
+</a>
+<script>
+  /* Le bouton de retour n'existe que pendant la revue de la maquette. Hors
+     d'un hôte local il disparaît, même si quelqu'un oublie de le retirer. */
+  (function(){
+    /* Le bouton reste pendant toute la revue — en local comme sur le lien
+       privé envoyé à la courtière. Il ne disparaît que sur le site de
+       production, où un lien sortant n'a pas sa place. */
+    /* En production le bouton disparaît. Dans le dossier de revue /revue/,
+       même sur le domaine, il reste : c'est là que se fait la navigation. */
+    if (/biztovisa/.test(location.hostname) && !/\/revue\//.test(location.pathname)) {
+      var b = document.querySelector(".mock-back");
+      if (b) b.remove();
+      var f = document.querySelector(".mock-flag");
+      if (f) f.remove();
+    }
+  })();
+</script>
+</body>
+</html>
