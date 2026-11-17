@@ -5,305 +5,244 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Les chiffres avant la visite</title>
 <meta name="robots" content="noindex, nofollow, noarchive">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 
 <style>
-/* Layout : une colonne de lecture étroite ; le relevé de chiffres occupe
-   toute la largeur du panneau, comme un extrait de compte. */
+/* Page claire. Le bordeaux ne porte rien : il signe — la pastille, le
+   bandeau d'identification, un filet. Les chiffres portent la page.
+   Layout : une colonne de 760 px, bandes pleine largeur pour le relevé. */
 :root{
-  --paper:#F6F7F6;
+  --paper:#FAF8F5;
   --surface:#FFFFFF;
-  --panel:#ECEEEC;
-  --ink:#15191A;
-  --ink-soft:#56605F;
-  --rule:#D4D8D6;
-  --accent:#0E5B50;
-  --accent-soft:#E3EFEC;
-  --flag:#8C4A2F;
-  --flag-soft:#F6EAE4;
-  --display:"Newsreader",Georgia,"Times New Roman",serif;
-  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --sunk:#F2EFEA;
+  --ink:#1C1A1A;
+  --ink-soft:#5C5658;
+  --ink-faint:#8A8386;
+  --line:#E6E0DA;
+  --wine:#6B2029;
+  --wine-soft:#F6ECEC;
+  --gold:#C9A14A;
+  --gold-band:#E6C25C;
+  --gold-ink:#4A3410;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0E1113;
-    --surface:#161A1C;
-    --panel:#1D2224;
-    --ink:#E9EBEA;
-    --ink-soft:#9AA5A3;
-    --rule:#2C3335;
-    --accent:#58C4AE;
-    --accent-soft:#16302C;
-    --flag:#D99272;
-    --flag-soft:#2C1E18;
+    --paper:#151414;
+    --surface:#1D1B1B;
+    --sunk:#242121;
+    --ink:#F0ECEA;
+    --ink-soft:#A9A2A2;
+    --ink-faint:#837C7C;
+    --line:#332E2E;
+    --wine:#E0919A;
+    --wine-soft:#2A1A1C;
+    --gold:#D9B868;
+    --gold-band:#E6C25C;
+    --gold-ink:#3A2808;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0E1113;
-  --surface:#161A1C;
-  --panel:#1D2224;
-  --ink:#E9EBEA;
-  --ink-soft:#9AA5A3;
-  --rule:#2C3335;
-  --accent:#58C4AE;
-  --accent-soft:#16302C;
-  --flag:#D99272;
-  --flag-soft:#2C1E18;
+  --paper:#151414;
+  --surface:#1D1B1B;
+  --sunk:#242121;
+  --ink:#F0ECEA;
+  --ink-soft:#A9A2A2;
+  --ink-faint:#837C7C;
+  --line:#332E2E;
+  --wine:#E0919A;
+  --wine-soft:#2A1A1C;
+  --gold:#D9B868;
+  --gold-band:#E6C25C;
+  --gold-ink:#3A2808;
   color-scheme:dark;
 }
 
 *{box-sizing:border-box}
 body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--body);
-  font-size:16px;
-  line-height:1.6;
-  margin:0;
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
 .wrap{
-  max-width:720px;
-  margin:0 auto;
+  max-width:760px;margin:0 auto;
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
 }
-.band{background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.band>.wrap{padding-block:clamp(40px,7vw,68px)}
-section>.wrap{padding-block:clamp(40px,7vw,68px)}
+section>.wrap{padding-block:clamp(34px,6vw,58px)}
+.sunk{background:var(--sunk);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 
-h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0}
-h1{font-size:clamp(2.1rem,7vw,3.4rem);line-height:1.08;letter-spacing:-.015em}
-h2{font-size:clamp(1.5rem,4.2vw,2.1rem);line-height:1.18;margin-bottom:14px}
-h3{font-size:1.1rem;line-height:1.3}
-p{margin:0 0 15px}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.022em;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(1.9rem,6.2vw,3rem)}
+h2{font-size:clamp(1.45rem,4.2vw,2.1rem);margin-bottom:12px}
+h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 14px}
 p:last-child{margin-bottom:0}
-strong{font-weight:600}
 .eyebrow{
-  font-family:var(--body);font-size:.72rem;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
-  margin:0 0 14px;
+  color:var(--wine);font-size:.76rem;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;margin:0 0 11px;
 }
-.lede{font-size:1.1rem;color:var(--ink-soft);max-width:60ch}
-.num{font-variant-numeric:tabular-nums}
-
-/* ---------- barre d'identification ---------- */
-.idbar{background:var(--ink);color:var(--paper)}
-.idbar .wrap{
-  padding-block:11px;display:flex;flex-wrap:wrap;gap:6px 14px;
-  align-items:baseline;font-size:.84rem;
-}
-.idbar b{font-weight:600}
-.idbar .ag{color:inherit;opacity:.78}
-.idbar .mock{
-  margin-left:auto;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
-  border:1px solid currentColor;border-radius:999px;padding:2px 9px;opacity:.7;
-}
+.lede{color:var(--ink-soft);font-size:1.03rem;max-width:62ch}
 
 /* ---------- héros ---------- */
-.hero .wrap{padding-block:clamp(44px,8vw,80px) clamp(32px,5vw,48px)}
-.combat{
-  font-family:var(--display);font-size:clamp(1.12rem,2.9vw,1.4rem);
-  line-height:1.45;margin:22px 0 0;max-width:34ch;
+.hero{position:relative;background:var(--sunk)}
+.hero-img{display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover}
+@media (min-width:700px){.hero-img{aspect-ratio:16/9}}
+.badge{
+  position:absolute;top:clamp(14px,3vw,24px);
+  left:max(16px,env(safe-area-inset-left,0px));
+  background:var(--wine);color:#fff;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 18px;border-radius:999px;
 }
-.combat em{font-style:italic;color:var(--accent)}
-.sig{
-  margin-top:14px;font-size:.82rem;color:var(--ink-soft);
-  letter-spacing:.03em;
+.price{
+  position:absolute;bottom:clamp(14px,3vw,24px);
+  left:max(16px,env(safe-area-inset-left,0px));
+  background:#FFFDF9;color:#1C1A1A;
+  font-size:clamp(1.4rem,5vw,2rem);font-weight:800;letter-spacing:-.025em;
+  font-variant-numeric:tabular-nums;
+  padding:9px clamp(15px,3vw,24px);border-radius:12px;
+  box-shadow:0 2px 14px rgba(0,0,0,.16);
 }
-.hero-figure{margin-top:30px}
-.hero-figure img{display:block;width:100%;max-width:100%;border-radius:3px}
-figcaption{font-size:.8rem;color:var(--ink-soft);margin-top:9px}
+.rule{height:4px;background:var(--gold-band)}
 
-/* ---------- ligne de propriété ---------- */
-.prop{
-  display:flex;flex-wrap:wrap;gap:4px 26px;align-items:baseline;
-  border-top:1px solid var(--rule);margin-top:30px;padding-top:18px;
-}
-.prop-item{display:flex;flex-direction:column;gap:2px;min-width:0}
-.prop-k{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-.prop-v{font-family:var(--display);font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.1}
-.prop-v span{font-family:var(--body);font-size:.78rem;color:var(--ink-soft);letter-spacing:.02em}
-.addr{font-size:.9rem;color:var(--ink-soft);margin:16px 0 0}
+/* ---------- la thèse ---------- */
+.combat{font-size:clamp(1.02rem,2.6vw,1.2rem);color:var(--ink-soft);max-width:46ch;margin-top:15px}
+.combat b{color:var(--wine);font-weight:700}
+.addr{color:var(--ink-faint);font-size:.9rem;margin-top:13px}
+
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:26px}
+@media (max-width:520px){.tiles{grid-template-columns:1fr}}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:clamp(14px,2.6vw,19px);min-width:0}
+.tile b{display:block;font-size:clamp(1.2rem,3.4vw,1.5rem);font-weight:800;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.tile span{display:block;color:var(--ink-soft);font-size:.87rem;margin-top:3px}
 
 /* ---------- le relevé ---------- */
-.ledger{background:var(--panel);border-radius:4px;overflow:hidden;margin-top:26px}
+.ledger{margin-top:24px;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--surface)}
 .row{
-  display:grid;grid-template-columns:1fr auto;gap:4px 18px;align-items:baseline;
-  padding:18px clamp(16px,3.5vw,24px);border-bottom:1px solid var(--rule);
+  display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:baseline;
+  padding:15px clamp(14px,3vw,22px);border-bottom:1px solid var(--line);
 }
-.row:last-child{border-bottom:0}
-.row-k{font-size:.97rem;min-width:0}
-.row-k small{display:block;font-family:var(--mono);font-size:.76rem;color:var(--ink-soft);margin-top:5px;line-height:1.55}
-.row-v{
-  font-family:var(--display);font-size:1.45rem;font-variant-numeric:tabular-nums;
-  white-space:nowrap;line-height:1.1;
-}
-.row.out{background:var(--accent-soft)}
-.row.out .row-v{font-size:clamp(1.8rem,5.5vw,2.5rem);color:var(--accent)}
-.row.out .row-k{font-weight:600}
-.verdict{
-  padding:clamp(20px,4vw,28px) clamp(16px,3.5vw,24px);
-  background:var(--ink);color:var(--paper);
-}
-.verdict .vk{font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;opacity:.72}
-.verdict .vv{
-  font-family:var(--display);font-size:clamp(2.4rem,9vw,3.6rem);line-height:1;
-  font-variant-numeric:tabular-nums;margin:8px 0 0;
-}
-.verdict .vn{margin:12px 0 0;font-size:.92rem;opacity:.82;max-width:48ch}
-.verdict .vn b{color:var(--paper)}
+.row-k{font-size:.96rem;font-weight:600;min-width:0}
+.row-k small{display:block;color:var(--ink-faint);font-size:.79rem;font-weight:400;margin-top:4px;line-height:1.5;font-variant-numeric:tabular-nums}
+.row-v{font-size:1.3rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.02em}
+.row.out{background:var(--wine-soft)}
+.row.out .row-v{color:var(--wine);font-size:clamp(1.65rem,5.2vw,2.2rem)}
+.verdict{padding:clamp(18px,3.6vw,26px) clamp(14px,3vw,22px);border-top:4px solid var(--gold-band);background:var(--surface)}
+.verdict .vk{font-size:.76rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:0}
+.verdict .vv{font-size:clamp(2.3rem,9vw,3.4rem);font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin:5px 0 0;line-height:1}
+.verdict .vn{margin:10px 0 0;font-size:.93rem;color:var(--ink-soft);max-width:50ch}
+.verdict .vn b{color:var(--ink);font-weight:700}
+.against{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.against-k{color:var(--ink-soft);font-size:.95rem;max-width:36ch;margin:0}
+.against-v{font-size:1.45rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:0}
+.hyp{margin-top:20px;padding:15px 17px;border-radius:11px;background:var(--sunk);color:var(--ink-faint);font-size:.84rem;line-height:1.6}
+.sunk .hyp{background:var(--surface)}
+.hyp b{color:var(--ink-soft);font-weight:600}
 
-.against{
-  display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline;
-  margin-top:22px;padding-top:18px;border-top:1px solid var(--rule);
-}
-.against-k{font-size:.94rem;color:var(--ink-soft);max-width:34ch}
-.against-v{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums}
+/* ---------- ce qu'ils ne disent pas ---------- */
+.flags{display:grid;gap:11px;margin-top:22px}
+.flag{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--wine);border-radius:0 11px 11px 0;padding:clamp(15px,3vw,21px)}
+.flag h3{color:var(--wine);margin-bottom:6px}
+.flag p{font-size:.95rem;color:var(--ink-soft);margin:0}
+.flag p b{color:var(--ink);font-weight:700}
 
-.hyp{
-  font-family:var(--mono);font-size:.78rem;line-height:1.65;color:var(--ink-soft);
-  margin-top:24px;padding-left:14px;border-left:2px solid var(--rule);
-}
-.hyp b{font-weight:500;color:var(--ink)}
-
-/* ---------- ce que les chiffres ne disent pas ---------- */
-.flags{display:grid;gap:14px;margin-top:22px}
-.flag{
-  background:var(--flag-soft);border-radius:4px;
-  padding:clamp(16px,3.2vw,22px);
-}
-.flag h3{color:var(--flag);margin-bottom:7px;font-size:1.04rem}
-.flag p{font-size:.95rem;color:var(--ink-soft)}
-.flag p b{color:var(--ink)}
-
-/* ---------- le logement ---------- */
-.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:24px}
+/* ---------- photos ---------- */
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:22px}
 .gal figure{margin:0;min-width:0}
-.gal img{display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:3px}
-.facts{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:0}
-.facts li{
-  display:grid;grid-template-columns:1fr auto;gap:4px 18px;align-items:baseline;
-  padding:12px 0;border-bottom:1px solid var(--rule);font-size:.97rem;
-}
-.facts li span{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding:0;list-style:none}
-.chips li{
-  font-size:.82rem;background:var(--panel);border-radius:999px;
-  padding:5px 13px;color:var(--ink-soft);
-}
+.gal img{display:block;width:100%;max-width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:9px}
+.facts{list-style:none;padding:0;margin:22px 0 0}
+.facts li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.facts li span{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chips li{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:.83rem;color:var(--ink-soft)}
+.caveat{color:var(--ink-faint);font-size:.86rem;margin-top:16px}
+
+/* ---------- bande d'appel ---------- */
+.cta{background:var(--gold-band);color:var(--gold-ink)}
+.cta .wrap{padding-block:clamp(17px,3.2vw,25px);display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+.cta p{margin:0;font-size:clamp(1rem,2.6vw,1.2rem);font-weight:700}
+.cta a{color:var(--gold-ink);text-decoration:none;font-size:clamp(1.45rem,5.2vw,1.95rem);font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+.cta a:hover{text-decoration:underline}
 
 /* ---------- formulaire ---------- */
-.form-band{background:var(--accent-soft);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.form-band .wrap{padding-block:clamp(40px,7vw,68px)}
-form{display:grid;gap:16px;margin-top:24px}
-.field{display:grid;gap:6px;min-width:0}
-label{font-size:.88rem;font-weight:500}
-.req{color:var(--flag)}
+form{display:grid;gap:14px;margin-top:22px}
+.field{display:grid;gap:5px;min-width:0}
+label{font-size:.88rem;font-weight:600}
+.req{color:var(--wine)}
 input,select,textarea{
-  font:inherit;font-size:.97rem;color:var(--ink);background:var(--surface);
-  border:1px solid var(--rule);border-radius:3px;padding:11px 12px;width:100%;
+  font:inherit;font-size:.97rem;width:100%;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:9px;padding:11px 12px;
 }
-textarea{min-height:88px;resize:vertical}
-input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{
-  outline:2px solid var(--accent);outline-offset:2px;
-}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:520px){.pair{grid-template-columns:1fr}}
-.consent{display:flex;gap:11px;align-items:flex-start;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
-.consent input{width:17px;height:17px;flex:0 0 auto;margin:3px 0 0;accent-color:var(--accent)}
-button{
-  font:inherit;font-weight:600;font-size:1rem;cursor:pointer;
-  background:var(--accent);color:var(--paper);border:0;border-radius:3px;
-  padding:13px 22px;justify-self:start;
-}
-:root[data-theme="dark"] button,
-.dark-btn{color:#0E1113}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button{color:#0E1113}}
-.err{color:var(--flag);font-size:.82rem;margin:0}
-.note{font-size:.82rem;color:var(--ink-soft);margin:0}
-.done{
-  background:var(--surface);border:1px solid var(--accent);border-radius:4px;
-  padding:clamp(18px,3.5vw,26px);margin-top:24px;
-}
-.done h3{color:var(--accent);margin-bottom:8px}
-.tel{font-family:var(--display);font-size:1.5rem;color:var(--accent);text-decoration:none;font-variant-numeric:tabular-nums}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:.87rem;color:var(--ink-soft);line-height:1.5}
+.consent input{width:18px;height:18px;flex:0 0 auto;margin:3px 0 0;accent-color:var(--wine)}
+button{font:inherit;font-size:1rem;font-weight:700;cursor:pointer;justify-self:start;background:var(--wine);color:#fff;border:0;border-radius:999px;padding:13px 28px}
+:root[data-theme="dark"] button{color:#151414}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button{color:#151414}}
+button:hover{opacity:.9}
+.err{color:var(--wine);font-size:.84rem;font-weight:600;margin:0}
+.note{color:var(--ink-faint);font-size:.83rem;margin:0}
+.done{background:var(--surface);border:1px solid var(--wine);border-radius:12px;padding:clamp(16px,3vw,24px);margin-top:22px}
+.done h3{color:var(--wine);margin-bottom:6px}
+.done p{color:var(--ink-soft)}
+.done a{color:var(--wine);font-size:1.4rem;font-weight:800;text-decoration:none;font-variant-numeric:tabular-nums}
 
-/* ---------- pied ---------- */
-footer .wrap{padding-block:clamp(36px,6vw,56px)}
-.card{
-  border-top:3px solid var(--accent);background:var(--surface);
-  padding:clamp(18px,3.5vw,24px);border-radius:0 0 4px 4px;
-}
-.card h3{font-size:1.2rem}
-.card .title{font-size:.94rem;color:var(--ink-soft);margin:3px 0 10px}
-.card .ag{font-size:.9rem;font-weight:600;margin:0}
-.card .ag span{display:block;font-weight:400;color:var(--ink-soft);font-size:.86rem;margin-top:3px}
-.legal{font-size:.78rem;color:var(--ink-soft);line-height:1.65;margin-top:22px}
-.legal p{margin:0 0 10px}
-
+/* ---------- bandeau d'identification ---------- */
+.idbar{background:#6B2029;color:#fff;border-top:4px solid var(--gold-band)}
+.idbar .wrap{padding-block:clamp(18px,3.4vw,26px)}
+.idbar .nm{font-size:1rem;font-weight:800;margin:0}
+.idbar .nm span{font-weight:600;color:rgba(255,255,255,.82)}
+.idbar .ag{font-size:.89rem;color:rgba(255,255,255,.82);margin:5px 0 0}
+.legal{color:rgba(255,255,255,.62);font-size:.76rem;line-height:1.6;margin-top:18px}
+.legal p{margin:0 0 9px}
+.mock{display:inline-block;margin-top:12px;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:4px 12px;font-size:.69rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-band)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
   /* --- ajouts propres au dossier de revue (absents de la version artifact) --- */
   [hidden]{display:none!important}
   img{max-width:100%}
-  .backbar{background:var(--panel);border-bottom:1px solid var(--rule)}
-  .backbar .wrap{padding-block:9px;display:flex;align-items:center;gap:9px}
-  .backbar a{
-    font-size:.85rem;font-weight:500;color:var(--accent);text-decoration:none;
-    display:inline-flex;align-items:center;gap:7px;
-  }
+  .backbar{background:var(--sunk);border-bottom:1px solid var(--line)}
+  .backbar .wrap{padding-block:9px;display:flex;align-items:center;gap:10px}
+  .backbar a{font-size:.85rem;font-weight:600;color:var(--wine);text-decoration:none}
   .backbar a:hover{text-decoration:underline}
-  .backbar small{color:var(--ink-soft);font-size:.76rem}
+  .backbar small{color:var(--ink-faint);font-size:.76rem}
   @media print{.backbar{display:none}}
 </style>
 </head>
 <body>
 <div class="backbar"><div class="wrap"><a href="tableau-de-bord.html">&#8592; Retour au tableau de bord</a><small>Variante E</small></div></div>
-<div class="idbar">
-  <div class="wrap">
-    <span><b>Ana Luisa Elgueta</b> <span class="ag">&middot; Courtier immobilier résidentiel et commercial</span></span>
-    <span class="ag">RE/MAX Immobilia inc., agence immobilière</span>
-    <span class="mock">Maquette</span>
-  </div>
-</div>
-
 <section class="hero">
+  <picture>
+    <source type="image/webp" srcset="images/facade-700.webp 700w, images/facade-1000.webp 1000w, images/facade-1400.webp 1400w" sizes="(max-width:800px) 100vw, 760px">
+    <img class="hero-img" src="images/facade-1000.jpg" srcset="images/facade-700.jpg 700w, images/facade-1000.jpg 1000w, images/facade-1400.jpg 1400w" sizes="(max-width:800px) 100vw, 760px" width="1400" height="1050" alt="Façade du quadruplex détaché de la rue André-Jobin, en brique, avec son entrée centrale.">
+  </picture>
+  <span class="badge">À vendre</span>
+  <span class="price">1 250 000 $</span>
+</section>
+<div class="rule"></div>
+
+<section>
   <div class="wrap">
-    <p class="eyebrow">Ahuntsic-Cartierville &middot; Nº Centris 16713528</p>
+    <p class="eyebrow">Quadruplex détaché &middot; Ahuntsic-Cartierville</p>
     <h1>Les chiffres avant la visite.</h1>
-    <p class="combat">Je me bats pour qu'une famille de Montréal puisse encore devenir propriétaire — en lui montrant les chiffres, <em>pas en lui vendant un rêve</em>.</p>
-    <p class="sig">Alors commençons par les chiffres. Tous les calculs sont affichés.</p>
+    <p class="combat">Je me bats pour qu'une famille de Montréal puisse encore devenir propriétaire — en lui montrant les chiffres, <b>pas en lui vendant un rêve</b>.</p>
+    <p class="addr">9785 - 9789, rue André-Jobin, Montréal &middot; Nº Centris 16713528</p>
 
-    <div class="prop">
-      <div class="prop-item">
-        <span class="prop-k">Prix demandé</span>
-        <span class="prop-v">1 250 000 $</span>
-      </div>
-      <div class="prop-item">
-        <span class="prop-k">Revenus bruts potentiels</span>
-        <span class="prop-v">50 880 $ <span>par année</span></span>
-      </div>
-      <div class="prop-item">
-        <span class="prop-k">Logements</span>
-        <span class="prop-v">4 <span>dont un 6½ de 4 chambres</span></span>
-      </div>
+    <div class="tiles">
+      <div class="tile"><b>4 logements</b><span>2 × 3½ &middot; 1 × 4½ &middot; 1 × 6½ de 4 chambres</span></div>
+      <div class="tile"><b>50 880 $ / an</b><span>Revenus bruts potentiels</span></div>
+      <div class="tile"><b>Walk Score 89</b><span>Métro, écoles et CPE à pied</span></div>
+      <div class="tile"><b>404 400 $</b><span>Terrain &middot; évaluation municipale 2026</span></div>
     </div>
-    <p class="addr">9785 - 9789, rue André-Jobin, Montréal &middot; quadruplex détaché</p>
-
-    <figure class="hero-figure">
-      <picture>
-        <source type="image/webp" srcset="images/facade-700.webp 700w, images/facade-1000.webp 1000w, images/facade-1400.webp 1400w" sizes="(max-width:760px) 100vw, 720px">
-        <img src="images/facade-1000.jpg" srcset="images/facade-700.jpg 700w, images/facade-1000.jpg 1000w, images/facade-1400.jpg 1400w" sizes="(max-width:760px) 100vw, 720px" width="1400" height="1050" alt="Façade du quadruplex détaché de la rue André-Jobin, en brique, avec son entrée centrale et son terrain avant.">
-      </picture>
-      <figcaption>Quadruplex détaché. Terrain évalué 404 400 $ au rôle 2026, à distance de marche du métro.</figcaption>
-    </figure>
   </div>
 </section>
 
-<section class="band">
+<section class="sunk">
   <div class="wrap">
     <p class="eyebrow">Le relevé</p>
     <h2>Ce qui sort de votre compte, chaque mois</h2>
@@ -311,38 +250,28 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
 
     <div class="ledger">
       <div class="row">
-        <div class="row-k">Versement hypothécaire
-          <small>1 250 000 $ − 187 500 $ (15 %) + prime SCHL · 25 ans · 4,5 %</small>
-        </div>
+        <div class="row-k">Versement hypothécaire<small>1 250 000 $ − 187 500 $ (15 %) + prime SCHL &middot; 25 ans &middot; 4,5 %</small></div>
         <div class="row-v">6 045 $</div>
       </div>
       <div class="row">
-        <div class="row-k">Dépenses de l'immeuble
-          <small>taxes, assurances, énergie des communs, entretien</small>
-        </div>
+        <div class="row-k">Dépenses de l'immeuble<small>taxes, assurances, énergie des communs, entretien</small></div>
         <div class="row-v">+ 1 330 $</div>
       </div>
       <div class="row">
-        <div class="row-k">Loyers des trois logements
-          <small>répartition hypothétique des 50 880 $ · à confirmer aux baux</small>
-        </div>
+        <div class="row-k">Loyers des trois logements<small>répartition hypothétique des 50 880 $ &middot; à confirmer aux baux</small></div>
         <div class="row-v">− 2 740 $</div>
       </div>
       <div class="row out">
-        <div class="row-k">Ce qui sort de votre poche
-          <small>6 045 + 1 330 − 2 740</small>
-        </div>
+        <div class="row-k">Ce qui sort de votre poche<small>6 045 + 1 330 − 2 740</small></div>
         <div class="row-v">4 635 $</div>
       </div>
       <div class="row">
-        <div class="row-k">Dont capital remboursé — qui vous revient
-          <small>6 045 − 4 058 d'intérêts · 23 844 $ la première année</small>
-        </div>
+        <div class="row-k">Dont capital remboursé — qui vous revient<small>6 045 − 4 058 d'intérêts &middot; 23 844 $ la première année</small></div>
         <div class="row-v">1 987 $</div>
       </div>
       <div class="verdict">
         <p class="vk">Le coût réel, par mois</p>
-        <p class="vv num">2 648 $</p>
+        <p class="vv">2 648 $</p>
         <p class="vn">4 635 $ sortis, moins 1 987 $ qui <b>s'ajoutent à votre patrimoine</b> au lieu de partir chez un propriétaire. Dans vingt-cinq ans, c'est l'immeuble qui est payé — et c'est souvent ce qui tient lieu de <b>fonds de retraite</b>.</p>
       </div>
     </div>
@@ -352,8 +281,7 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
       <p class="against-v">2 000 – 3 000 $</p>
     </div>
 
-    <p class="hyp"><b>D'où viennent ces chiffres.</b><br>
-    Le versement, la prime et le capital sont calculés — composition semestrielle, comme toute hypothèque canadienne. Les revenus bruts potentiels de 50 880 $ sont ceux publiés à la fiche Centris. <b>La répartition des loyers entre les trois logements est une hypothèse de travail</b>, et les dépenses sont estimées à partir du rôle d'évaluation et de moyennes du secteur : environ 850 $ des 1 330 $ restent à confirmer à l'état des revenus et dépenses du vendeur. Le loyer comparable vient des annonces de quatre chambres relevées dans le secteur en novembre 2026.</p>
+    <p class="hyp"><b>D'où viennent ces chiffres.</b> Le versement, la prime et le capital sont calculés en composition semestrielle, comme toute hypothèque canadienne. Les revenus bruts potentiels de 50 880 $ sont ceux publiés à la fiche Centris. <b>La répartition des loyers entre les trois logements est une hypothèse de travail</b>, et les dépenses sont estimées à partir du rôle d'évaluation et de moyennes du secteur : environ 850 $ des 1 330 $ restent à confirmer à l'état des revenus et dépenses du vendeur. Le loyer comparable vient des annonces de quatre chambres relevées dans le secteur en novembre 2026.</p>
   </div>
 </section>
 
@@ -361,8 +289,7 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
   <div class="wrap">
     <p class="eyebrow">Avant d'aller plus loin</p>
     <h2>Ce que ces chiffres ne disent pas</h2>
-    <p class="lede">Un relevé honnête comporte ce qui dérange. Voici les trois choses à régler avant même de visiter.</p>
-
+    <p class="lede">Un relevé honnête comporte ce qui dérange. Trois choses à régler avant même de visiter.</p>
     <div class="flags">
       <div class="flag">
         <h3>Il faut environ 217 000 $ à la signature</h3>
@@ -380,7 +307,7 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
   </div>
 </section>
 
-<section class="band">
+<section class="sunk">
   <div class="wrap">
     <p class="eyebrow">Le logement</p>
     <h2>Un 6½ de quatre chambres, pour vous</h2>
@@ -389,46 +316,48 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
     <div class="gal">
       <figure>
         <picture>
-          <source type="image/webp" srcset="images/salon-500.webp 500w, images/salon-800.webp 800w" sizes="(max-width:760px) 100vw, 232px">
-          <img src="images/salon-800.jpg" srcset="images/salon-500.jpg 500w, images/salon-800.jpg 800w" sizes="(max-width:760px) 100vw, 232px" width="800" height="600" alt="Salon du 6½, avec ses fenêtres donnant sur la rue.">
+          <source type="image/webp" srcset="images/salon-500.webp 500w, images/salon-800.webp 800w" sizes="(max-width:800px) 100vw, 244px">
+          <img src="images/salon-800.jpg" srcset="images/salon-500.jpg 500w, images/salon-800.jpg 800w" sizes="(max-width:800px) 100vw, 244px" width="800" height="600" alt="Salon du 6½, avec ses fenêtres donnant sur la rue.">
         </picture>
       </figure>
       <figure>
         <picture>
-          <source type="image/webp" srcset="images/cour-600.webp 600w, images/cour-900.webp 900w" sizes="(max-width:760px) 100vw, 232px">
-          <img src="images/cour-900.jpg" srcset="images/cour-600.jpg 600w, images/cour-900.jpg 900w" sizes="(max-width:760px) 100vw, 232px" width="900" height="675" alt="La cour arrière de la propriété.">
+          <source type="image/webp" srcset="images/cour-600.webp 600w, images/cour-900.webp 900w" sizes="(max-width:800px) 100vw, 244px">
+          <img src="images/cour-900.jpg" srcset="images/cour-600.jpg 600w, images/cour-900.jpg 900w" sizes="(max-width:800px) 100vw, 244px" width="900" height="675" alt="La cour arrière de la propriété.">
         </picture>
       </figure>
       <figure>
         <picture>
-          <source type="image/webp" srcset="images/entree-600.webp 600w, images/entree-900.webp 900w" sizes="(max-width:760px) 100vw, 232px">
-          <img src="images/entree-900.jpg" srcset="images/entree-600.jpg 600w, images/entree-900.jpg 900w" sizes="(max-width:760px) 100vw, 232px" width="900" height="675" alt="L'entrée du logement principal.">
+          <source type="image/webp" srcset="images/entree-600.webp 600w, images/entree-900.webp 900w" sizes="(max-width:800px) 100vw, 244px">
+          <img src="images/entree-900.jpg" srcset="images/entree-600.jpg 600w, images/entree-900.jpg 900w" sizes="(max-width:800px) 100vw, 244px" width="900" height="675" alt="L'entrée du logement principal.">
         </picture>
       </figure>
     </div>
 
     <ul class="facts">
       <li>Logements <span>4</span></li>
-      <li>Unité principale <span>6½ · 4 chambres · 1 salle de bain</span></li>
-      <li>Évaluation municipale du terrain, rôle 2026 <span>404 400 $</span></li>
+      <li>Unité principale <span>6½ &middot; 4 chambres &middot; 1 salle de bain</span></li>
+      <li>Année de construction <span>1963</span></li>
+      <li>Évaluation municipale 2026 <span>880 600 $</span></li>
       <li>Numéro Centris <span>16713528</span></li>
     </ul>
 
     <ul class="chips">
-      <li>Walk Score 89</li>
-      <li>Métro à pied</li>
-      <li>Écoles primaires</li>
-      <li>Garderies et CPE</li>
-      <li>Cégep</li>
-      <li>Hôpital</li>
-      <li>Piste cyclable</li>
-      <li>Autoroute</li>
+      <li>Métro à pied</li><li>Écoles primaires</li><li>Garderies et CPE</li>
+      <li>Cégep</li><li>Hôpital</li><li>Piste cyclable</li><li>Autoroute</li>
     </ul>
-    <p class="addr">Le garage est visible sur les photos; son usage — inclus au 6½ ou loué à un locataire — reste à confirmer.</p>
+    <p class="caveat">Le garage est visible sur les photos; son usage — inclus au 6½ ou loué à un locataire — reste à confirmer.</p>
   </div>
 </section>
 
-<section class="form-band" id="dossier">
+<div class="cta">
+  <div class="wrap">
+    <p>Appelez pour une visite</p>
+    <a href="tel:+15149263136">514 926-3136</a>
+  </div>
+</div>
+
+<section id="dossier">
   <div class="wrap">
     <p class="eyebrow">Le dossier complet</p>
     <h2>Les baux, les dépenses réelles, les comparables vendus</h2>
@@ -475,29 +404,25 @@ footer .wrap{padding-block:clamp(36px,6vw,56px)}
 
     <div class="done" id="done" hidden>
       <h3>Maquette — rien n'a été envoyé</h3>
-      <p>Sur la page en ligne, le dossier partirait par courriel dans la minute. Ici, le formulaire n'est pas branché. Pour joindre la courtière directement&nbsp;:</p>
-      <p><a class="tel" href="tel:+15149991689">514 999-1689</a></p>
+      <p>Sur la page en ligne, le dossier partirait par courriel dans la minute. Ici, le formulaire n'est pas branché. Pour joindre la courtière directement :</p>
+      <p><a href="tel:+15149263136">514 926-3136</a></p>
     </div>
   </div>
 </section>
 
-<footer>
+<div class="idbar">
   <div class="wrap">
-    <div class="card">
-      <h3>Ana Luisa Elgueta</h3>
-      <p class="title">Courtier immobilier résidentiel et commercial</p>
-      <p class="ag">RE/MAX Immobilia inc.
-        <span>Agence immobilière<br>2640, Henri-Bourassa Est, Montréal (Québec) H2B 1V6</span>
-      </p>
-    </div>
+    <p class="nm">Ana Luisa Elgueta <span>&middot; Courtier immobilier résidentiel et commercial</span></p>
+    <p class="ag">RE/MAX Immobilia inc., agence immobilière &middot; Nº Centris 16713528</p>
+    <p class="ag">Service en français et en espagnol &middot; Titulaire d'un permis de l'OACIQ</p>
     <div class="legal">
-      <p>Titulaire d'un permis valide de l'Organisme d'autoréglementation du courtage immobilier du Québec (OACIQ). Détient une assurance responsabilité professionnelle. Services offerts en français et en espagnol.</p>
-      <p>Propriété inscrite sous le numéro Centris 16713528. Les revenus bruts potentiels de 50 880 $ sont ceux publiés à la fiche Centris; il s'agit d'un potentiel et non d'un revenu garanti ou constaté. Les évaluations municipales citées proviennent du rôle d'évaluation 2026 de la Ville de Montréal. Les données démographiques et le Walk Score sont fournis à titre informatif.</p>
+      <p>Titulaire d'un permis valide de l'Organisme d'autoréglementation du courtage immobilier du Québec (OACIQ). Détient une assurance responsabilité professionnelle.</p>
+      <p>Les revenus bruts potentiels de 50 880 $ sont ceux publiés à la fiche Centris; il s'agit d'un potentiel et non d'un revenu garanti ou constaté. Les évaluations municipales citées proviennent du rôle d'évaluation 2026 de la Ville de Montréal. Le Walk Score est fourni à titre informatif.</p>
       <p>Les montants mensuels affichés sont des calculs présentés à titre indicatif, établis sur les hypothèses énoncées à la section « D'où viennent ces chiffres ». Ils ne constituent ni une offre de financement, ni un conseil financier, ni une promesse de rendement. Toute décision devrait s'appuyer sur les baux, l'état des revenus et dépenses du vendeur et l'avis d'un professionnel du financement.</p>
-      <p>Maquette de révision interne. Numéro de permis et coordonnées téléphoniques à confirmer avant toute mise en ligne.</p>
     </div>
+    <span class="mock">Maquette de révision</span>
   </div>
-</footer>
+</div>
 
 <script>
 (function(){
