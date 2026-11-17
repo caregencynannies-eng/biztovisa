@@ -1075,7 +1075,7 @@
        production, où un lien sortant n'a pas sa place. */
     /* En production le bouton disparaît. Dans le dossier de revue /revue/,
        même sur le domaine, il reste : c'est là que se fait la navigation. */
-    if (/biztovisa/.test(location.hostname) && !/\/revue\//.test(location.pathname)) {
+    if (/(^|\.)biztovisa\.com$/.test(location.hostname)) {
       var b = document.querySelector(".mock-back");
       if (b) b.remove();
       var f = document.querySelector(".mock-flag");
